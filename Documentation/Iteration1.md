@@ -1,6 +1,6 @@
 # Iteration 1
 
-## 1.
+## 1. Game Modes
 
 **User story**: As a novice user, I want to be able to choose between two game modes so that I can practice translating from the native language to the foreign one and vice versa.
 
@@ -10,7 +10,7 @@
 
 
 
-## 2.
+## 2. Word List Customization
 
 **User story**: As a language learner, I want to add my own word pairs to the game and choose the pairs to be used in a game so that I can customize the vocabulary I practice.
 
@@ -19,13 +19,13 @@
 ![Main menu](img/main_menu.jpg "Main menu")
 ![Word list](img/word_list.jpg "Word list")
 
-**TDD example**: After choosing a game mode, the user is prompted to select the word pairs from the added list that will be used in that game.
+**TDD example**: After choosing a game mode, the user is prompted to select the word pairs from the added list which will be used in that game.
 
 ![Word selection screen](img/select_word.jpg "Word selection")
 
 
 
-## 3.
+## 3. Difficulty Mode
 
 **User Story**: As a language learner, I want to choose the difficulty of the game because I want to choose the appropriate amount of challenge for my language level.
 
@@ -35,7 +35,7 @@
 
 
 
-## 4.
+## 4. Interface Mode
 
 **User Story**: As a user, I want to effectively interact with the sudoku board because I want to focus on learning vocabulary instead of struggling with the user interface.
 
@@ -57,7 +57,7 @@
 
 
 
-## 5.
+## 5. Interface Optimization
 
 **User Story**: As a mobile phone user, I want to view the word of a square in a separate section on the screen because the word might not fit in its square.
 
@@ -67,7 +67,7 @@
 
 
 
-## 6.
+## 6. Interface Optimization 2
 
 **User Story**: As a novice user, I want the invalid moves to be highlighted so that I can tell when I make a mistake.
 
@@ -77,7 +77,7 @@
 
 
 
-## 7.
+## 7. Interface Optimization 3
 
 **User Story**: As an expert user, I want to play without in-app assistance because I want to challenge myself.
 
