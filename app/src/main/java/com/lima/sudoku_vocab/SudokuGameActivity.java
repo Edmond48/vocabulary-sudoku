@@ -6,20 +6,13 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.lima.model.VocabSudokuBoard;
-
-import org.w3c.dom.Text;
 
 public class SudokuGameActivity extends AppCompatActivity {
 
@@ -27,10 +20,12 @@ public class SudokuGameActivity extends AppCompatActivity {
     VocabSudokuBoard board = new VocabSudokuBoard();
 
     private final int BOARD_SIDE = board.getDimension();
-    private TextView[][] cells = new TextView[BOARD_SIDE][BOARD_SIDE];
 
-    int selectedActionButtonIndex = BOARD_SIDE;
-    int selectedCellIndex = -1;
+    private final TextView[][] cells = new TextView[BOARD_SIDE][BOARD_SIDE];
+    private final TextView[] wordButtons = new TextView[BOARD_SIDE];
+
+    private int selectedActionButtonIndex = BOARD_SIDE;
+    private int selectedCellIndex = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +34,6 @@ public class SudokuGameActivity extends AppCompatActivity {
 
         populateSudokuBoard();
         populateWordButtons();
-
-        findViewById(R.id.wordDisplay).setBackgroundColor(Color.BLUE);
     }
 
     // TODO When model classes are ready, incorporate them here
@@ -80,11 +73,11 @@ public class SudokuGameActivity extends AppCompatActivity {
 
                 // Toast the coordinate when a cell is clicked
                 cell.setOnClickListener(
-                        view -> onCellClick(view, rowIndex, colIndex)
+                        view -> onCellClick(rowIndex, colIndex)
                 );
 
                 // Set the cell's height to match its width after it has been drawn on the screen
-                makeTextViewSquare(cell);
+                setUpCellWhenDrawn(cell);
 
                 // Add the cell to the row
                 row.addView(cell);
@@ -92,15 +85,6 @@ public class SudokuGameActivity extends AppCompatActivity {
                 // Add the cell to internal array
                 cells[i][j] = cell;
             }
-        }
-    }
-
-    private void onCellClick(android.view.View v, int rowIndex, int colIndex) {
-        selectedCellIndex = rowIndex * BOARD_SIDE + colIndex;
-
-        if (selectedActionButtonIndex < BOARD_SIDE) {
-            board.setCell(rowIndex, colIndex, selectedActionButtonIndex);
-            cells[rowIndex][colIndex].setText(board.getWord(selectedActionButtonIndex).getNativeWord());
         }
     }
 
@@ -138,25 +122,90 @@ public class SudokuGameActivity extends AppCompatActivity {
                 final int wordIndex = j + i * (int) WORDS_PER_ROW;
 
                 wordBtn.setOnClickListener(
-                        view -> onActionButtonClick(view, wordIndex)
+                        view -> onActionButtonClick(wordIndex)
                 );
 
                 setUpWordButtonWhenDrawn(wordBtn, rowIndex, colIndex);
 
                 row.addView(wordBtn);
+
+                this.wordButtons[wordIndex] = wordBtn;
             }
         }
     }
 
-    private void onActionButtonClick(android.view.View v, int wordIndex) {
-        selectedActionButtonIndex = wordIndex;
-        if (selectedCellIndex > -1) {
-            cells[selectedCellIndex/BOARD_SIDE][selectedCellIndex%BOARD_SIDE].setText(board.getWord(selectedActionButtonIndex).getNativeWord());
+    private void onCellClick(int rowIndex, int colIndex) {
+        // If there is an action button already selected
+        if (selectedActionButtonIndex < BOARD_SIDE) {
+
+            selectedCellIndex = rowIndex * BOARD_SIDE + colIndex;
+
+            // Insert the word inside data structure
+            board.setCell(rowIndex, colIndex, selectedActionButtonIndex);
+
+            // Update word on screen
+            cells[rowIndex][colIndex].setText(board.getWord(selectedActionButtonIndex).getNativeWord());
+
+            // Deselected both and update indexes
+            wordButtons[selectedActionButtonIndex].setBackgroundColor(Color.GRAY);
+            cells[rowIndex][colIndex].setBackgroundColor(Color.GRAY);
             selectedActionButtonIndex = BOARD_SIDE;
+            selectedCellIndex = -1;
+        }
+        else {
+            // Unhighlight current selected cell if it exists
+            if (selectedCellIndex != -1)
+                cells[selectedCellIndex/BOARD_SIDE][selectedCellIndex%BOARD_SIDE].setBackgroundColor(Color.GRAY);
+
+            if (rowIndex == selectedCellIndex / BOARD_SIDE && colIndex == selectedCellIndex % BOARD_SIDE) {
+                selectedCellIndex = -1;
+                return;
+            }
+
+            // Set and highlight new cell
+            selectedCellIndex = rowIndex * BOARD_SIDE + colIndex;
+            cells[rowIndex][colIndex].setBackgroundColor(Color.GREEN);
         }
     }
 
-    private void makeTextViewSquare(TextView cell) {
+    private void onActionButtonClick(int wordIndex) {
+        // If there is a cell already selected
+        if (selectedCellIndex > -1) {
+            int rowIndex = selectedCellIndex / BOARD_SIDE;
+            int colIndex = selectedCellIndex % BOARD_SIDE;
+
+            selectedActionButtonIndex = wordIndex;
+
+            // Set word inside data structure
+            board.setCell(rowIndex, colIndex, selectedActionButtonIndex);
+
+            // Update the word on the screen
+            cells[rowIndex][colIndex].setText(board.getWord(selectedActionButtonIndex).getNativeWord());
+
+            // Reset both buttons
+            wordButtons[selectedActionButtonIndex].setBackgroundColor(Color.GRAY);
+            cells[rowIndex][colIndex].setBackgroundColor(Color.GRAY);
+            selectedActionButtonIndex = BOARD_SIDE;
+            selectedCellIndex = -1;
+
+        }
+        else {
+            // Deselect action button
+            if (selectedActionButtonIndex < BOARD_SIDE && selectedActionButtonIndex > -1)
+                wordButtons[selectedActionButtonIndex].setBackgroundColor(Color.GRAY);
+
+            if (selectedActionButtonIndex == wordIndex) {
+                selectedActionButtonIndex = BOARD_SIDE;
+                return;
+            }
+
+            // Set new word button and highlight it
+            selectedActionButtonIndex = wordIndex;
+            wordButtons[selectedActionButtonIndex].setBackgroundColor(Color.GREEN);
+        }
+    }
+
+    private void setUpCellWhenDrawn(TextView cell) {
         cell.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 
             // Handle correct method call on older Android versions
