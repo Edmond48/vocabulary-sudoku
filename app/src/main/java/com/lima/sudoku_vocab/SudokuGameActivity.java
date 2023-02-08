@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.ViewTreeObserver;
 import android.widget.TableLayout;
@@ -77,7 +78,7 @@ public class SudokuGameActivity extends AppCompatActivity {
                 );
 
                 // Set the cell's height to match its width after it has been drawn on the screen
-                setUpCellWhenDrawn(cell);
+                setUpCellWhenDrawn(cell, rowIndex, colIndex);
 
                 // Add the cell to the row
                 row.addView(cell);
@@ -117,6 +118,7 @@ public class SudokuGameActivity extends AppCompatActivity {
                 wordBtn.setLayoutParams(params);
 
                 wordBtn.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
+                wordBtn.setGravity(Gravity.CENTER);
                 wordBtn.setBackgroundColor(Color.GRAY);
 
                 final int wordIndex = j + i * (int) WORDS_PER_ROW;
@@ -205,7 +207,7 @@ public class SudokuGameActivity extends AppCompatActivity {
         }
     }
 
-    private void setUpCellWhenDrawn(TextView cell) {
+    private void setUpCellWhenDrawn(TextView cell, int row, int col) {
         cell.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 
             // Handle correct method call on older Android versions
@@ -218,6 +220,10 @@ public class SudokuGameActivity extends AppCompatActivity {
                 else
                     cell.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
+                int wordIndex = board.getCell(row, col);
+                if (wordIndex != -1)
+                    cell.setText(board.getWord(wordIndex).getNativeWord());
+
                 // make the cell square
                 cell.setHeight(cell.getWidth());
 
@@ -228,6 +234,7 @@ public class SudokuGameActivity extends AppCompatActivity {
                 cell.setMinimumHeight(cell.getHeight());
 
                 cell.setBackgroundColor(Color.GRAY);
+                cell.setEllipsize(TextUtils.TruncateAt.END);
                 cell.setMaxLines(1);
             }
         });
