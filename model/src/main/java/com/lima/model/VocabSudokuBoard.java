@@ -118,6 +118,10 @@ public class VocabSudokuBoard {
     private boolean validateCell(int row, int col) {
         int wordIndex = board[row][col];
 
+        // if cell is empty, validation not needed
+        if (wordIndex == -1)
+            return true;
+
         // validate row
         for (int i = 0; i < dimension; i++) {
             if (board[row][i] == wordIndex && i != col)
@@ -131,10 +135,13 @@ public class VocabSudokuBoard {
         }
 
         // validate subgrid
-        int rowStart = row / gridWidth * gridWidth;
-        int colStart = col / gridHeight * gridHeight;
-        for (int i = rowStart; i < gridHeight; i++) {
-            for (int j = colStart; j < gridWidth; j++){
+        // find the coordinate of the top left cell of the sub-grid
+        int rowStart = row / gridHeight * gridHeight;
+        int colStart = col / gridWidth * gridWidth;
+
+        // loop through coordinates of the sub-grid
+        for (int i = rowStart; i < rowStart + gridHeight; i++) {
+            for (int j = colStart; j < colStart + gridWidth; j++){
                 if (board[i][j] == wordIndex && i != row && j != col)
                     return false;
             }
@@ -157,8 +164,8 @@ public class VocabSudokuBoard {
 
     private static void shuffle(int[] arr) {
         for (int i = 0; i < arr.length; i++) {
-            // generate index for element at i
-            int index = (int) (Math.random() * (arr.length - i)) + i;
+            // generate index for element at i between i and arr.length - 1
+            int index = i + (int) (Math.random() * Integer.MAX_VALUE) % (arr.length - i);
 
             // swap elements at index and i
             int temp = arr[i];
