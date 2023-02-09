@@ -5,27 +5,20 @@ public class VocabSudokuBoard {
     public static final float DIFFICULTY_EASY = 0.45f;
     public static final float DIFFICULTY_MEDIUM = 0.30f;
     public static final float DIFFICULTY_HARD = 0.15f;
+    public static final int EMPTY_WORD = -1;
 
     private static final int DEFAULT_DIMENSION = 9;
     private static final int DEFAULT_SUBGRID_HEIGHT = 3;
     private static final int DEFAULT_SUBGRID_WIDTH = 3;
 
     private final int dimension = DEFAULT_DIMENSION;
-    private final int subgridHeight = DEFAULT_SUBGRID_HEIGHT;
-    private final int subgridWidth = DEFAULT_SUBGRID_WIDTH;
+
+    private final int gridWidth = DEFAULT_SUBGRID_WIDTH;
+    private final int gridHeight = DEFAULT_SUBGRID_HEIGHT;
 
     private int[][] board;
+    private boolean[][] isFixed;
     private WordPair[] wordList;
-
-//    private static class Coordinate {
-//        public int x;
-//        public int y;
-//
-//        Coordinate(int x, int y) {
-//            this.x = x;
-//            this.y = y;
-//        }
-//    }
 
     public VocabSudokuBoard() {
         board = new int[dimension][dimension];
@@ -34,6 +27,14 @@ public class VocabSudokuBoard {
                 board[i][j] = -1;
             }
         }
+
+        isFixed = new boolean[dimension][dimension];
+        for (int i = 0; i < dimension; i++) {
+            for (int j = 0; j < dimension; j++){
+                isFixed[i][j] = false;
+            }
+        }
+
         wordList = new WordPair[dimension];
         wordList[0] = new WordPair("apple", "tao");
         wordList[1] = new WordPair("bee", "ong");
@@ -55,6 +56,8 @@ public class VocabSudokuBoard {
     }
 
     public void setCell(int row, int col, int wordIndex) {
+        if (isFixed[row][col])
+            return;
         if (row >= dimension || col >= dimension || wordIndex >= dimension)
             throw new IllegalArgumentException();
         board[row][col] = Math.max(wordIndex, -1);
@@ -66,6 +69,18 @@ public class VocabSudokuBoard {
 
     public int getDimension() {
         return dimension;
+    }
+
+    public int getGridWidth() {
+        return gridWidth;
+    }
+
+    public int getGridHeight() {
+        return gridHeight;
+    }
+
+    public boolean isFixed(int row, int col) {
+        return isFixed[row][col];
     }
 
     private void generateBoard(float difficulty) {
@@ -91,8 +106,10 @@ public class VocabSudokuBoard {
 
             for (int j = 0; j < wordIndex.length; j++) {
                 board[row][col] = wordIndex[j];
-                if (validateCell(row, col))
+                if (validateCell(row, col)) {
+                    isFixed[row][col] = true;
                     break;
+                }
                 board[row][col] = -1;
             }
         }
@@ -114,10 +131,10 @@ public class VocabSudokuBoard {
         }
 
         // validate subgrid
-        int rowStart = row / subgridWidth * subgridWidth;
-        int colStart = col / subgridHeight * subgridHeight;
-        for (int i = rowStart; i < subgridHeight; i++) {
-            for (int j = colStart; j < subgridWidth; j++){
+        int rowStart = row / gridWidth * gridWidth;
+        int colStart = col / gridHeight * gridHeight;
+        for (int i = rowStart; i < gridHeight; i++) {
+            for (int j = colStart; j < gridWidth; j++){
                 if (board[i][j] == wordIndex && i != row && j != col)
                     return false;
             }
