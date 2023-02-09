@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewTreeObserver;
 import android.widget.TableLayout;
@@ -19,6 +20,7 @@ public class SudokuGameActivity extends AppCompatActivity {
 
     public static final double WORDS_PER_ROW = 3.0;
     private int PRIMARY_CELL_COLOR;
+    private int SECONDARY_CELL_COLOR;
     private int FIXED_CELL_COLOR;
     private int HIGHLIGHT_COLOR;
     
@@ -41,6 +43,7 @@ public class SudokuGameActivity extends AppCompatActivity {
         PRIMARY_CELL_COLOR = ContextCompat.getColor(this, R.color.blue);
         FIXED_CELL_COLOR = ContextCompat.getColor(this, R.color.dark_blue);
         HIGHLIGHT_COLOR = ContextCompat.getColor(this, R.color.purple_500);
+        SECONDARY_CELL_COLOR = ContextCompat.getColor(this, R.color.light_blue);
 
         populateSudokuBoard();
         populateWordButtons();
@@ -73,7 +76,13 @@ public class SudokuGameActivity extends AppCompatActivity {
                         TableRow.LayoutParams.MATCH_PARENT,
                         1.0f
                 );
-                params.setMargins(5, 5, 5, 5);
+
+                // hacky solution to create border around sub-grids
+                int bigMarginValue = 10;
+                int smallMarginValue = 2;
+                int bottomMargin = i == 2 || i == 5 ? bigMarginValue : smallMarginValue;
+                int rightMargin = j == 2 || j == 5 ? bigMarginValue : smallMarginValue;
+                params.setMargins(smallMarginValue, smallMarginValue, rightMargin, bottomMargin);
                 cell.setLayoutParams(params);
 
                 cell.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
@@ -120,6 +129,7 @@ public class SudokuGameActivity extends AppCompatActivity {
                         TableRow.LayoutParams.MATCH_PARENT,
                         1.0f
                 );
+
                 params.setMargins(5, 5, 5, 5);
                 wordBtn.setLayoutParams(params);
 
@@ -159,10 +169,7 @@ public class SudokuGameActivity extends AppCompatActivity {
             }
 
             // Deselected the cell and update selected index
-            cells[rowIndex][colIndex].setBackgroundColor(
-                    board.isFixed(rowIndex, colIndex) ?
-                        FIXED_CELL_COLOR :
-                        PRIMARY_CELL_COLOR);
+            setCellBackgroundColor(rowIndex, colIndex);
             selectedCellIndex = -1;
         }
         // Only cell is selected
@@ -171,11 +178,7 @@ public class SudokuGameActivity extends AppCompatActivity {
             if (selectedCellIndex != -1) {
                 int currentSelectedRow = selectedCellIndex / BOARD_SIDE;
                 int currentSelectedCol = selectedCellIndex % BOARD_SIDE;
-                cells[currentSelectedRow][currentSelectedCol]
-                        .setBackgroundColor(
-                                board.isFixed(currentSelectedRow, currentSelectedCol) ?
-                                        FIXED_CELL_COLOR :
-                                        PRIMARY_CELL_COLOR);
+                setCellBackgroundColor(currentSelectedRow, currentSelectedCol);
             }
 
             // If the current cell is already selected, unselect it
@@ -211,10 +214,7 @@ public class SudokuGameActivity extends AppCompatActivity {
 
             // Reset both buttons
             wordButtons[selectedActionButtonIndex].setBackgroundResource(R.drawable.rounded_corner_blue);
-            cells[rowIndex][colIndex].setBackgroundColor(
-                    board.isFixed(rowIndex, colIndex) ?
-                            FIXED_CELL_COLOR :
-                            PRIMARY_CELL_COLOR);
+            setCellBackgroundColor(rowIndex, colIndex);
             selectedActionButtonIndex = BOARD_SIDE;
             selectedCellIndex = -1;
 
@@ -264,15 +264,10 @@ public class SudokuGameActivity extends AppCompatActivity {
                 cell.setMaxHeight(cell.getHeight());
                 cell.setMinimumHeight(cell.getHeight());
 
-                cell.setBackgroundColor(PRIMARY_CELL_COLOR);
+                setCellBackgroundColor(row, col);
+
                 cell.setEllipsize(TextUtils.TruncateAt.END);
                 cell.setMaxLines(1);
-
-                if (board.isFixed(row, col)) {
-                    cell.setBackgroundColor(FIXED_CELL_COLOR);
-                } else {
-                    cell.setBackgroundColor(PRIMARY_CELL_COLOR);
-                }
             }
         });
     }
@@ -301,5 +296,21 @@ public class SudokuGameActivity extends AppCompatActivity {
                 wordBtn.setText(board.getWord(colIndex + rowIndex * (int) WORDS_PER_ROW).getNativeWord());
             }
         });
+    }
+
+    private boolean isInLightSubgrid(int row, int col) {
+        int subgridRow = row / board.getGridWidth();
+        int subgridColumn= col / board.getGridHeight();
+        Log.i("GameActivity", "row: " + row + ", col: " + col + " subgridRow: " + subgridRow + ", subgridColumn: " + subgridColumn);
+        return (subgridRow + subgridColumn) % 2 == 1;
+    }
+
+    private void setCellBackgroundColor(int row, int col) {
+        if (board.isFixed(row, col))
+            cells[row][col].setBackgroundColor(FIXED_CELL_COLOR);
+        else if (isInLightSubgrid(row, col))
+            cells[row][col].setBackgroundColor(SECONDARY_CELL_COLOR);
+        else
+            cells[row][col].setBackgroundColor(PRIMARY_CELL_COLOR);
     }
 }

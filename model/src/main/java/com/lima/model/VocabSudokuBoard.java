@@ -12,8 +12,9 @@ public class VocabSudokuBoard {
     private static final int DEFAULT_SUBGRID_WIDTH = 3;
 
     private final int dimension = DEFAULT_DIMENSION;
-    private final int subgridHeight = DEFAULT_SUBGRID_HEIGHT;
-    private final int subgridWidth = DEFAULT_SUBGRID_WIDTH;
+
+    private final int gridWidth = DEFAULT_SUBGRID_WIDTH;
+    private final int gridHeight = DEFAULT_SUBGRID_HEIGHT;
 
     private int[][] board;
     private boolean[][] isFixed;
@@ -70,6 +71,14 @@ public class VocabSudokuBoard {
         return dimension;
     }
 
+    public int getGridWidth() {
+        return gridWidth;
+    }
+
+    public int getGridHeight() {
+        return gridHeight;
+    }
+
     public boolean isFixed(int row, int col) {
         return isFixed[row][col];
     }
@@ -122,10 +131,10 @@ public class VocabSudokuBoard {
         }
 
         // validate subgrid
-        int rowStart = row / subgridWidth * subgridWidth;
-        int colStart = col / subgridHeight * subgridHeight;
-        for (int i = rowStart; i < subgridHeight; i++) {
-            for (int j = colStart; j < subgridWidth; j++){
+        int rowStart = row / gridWidth * gridWidth;
+        int colStart = col / gridHeight * gridHeight;
+        for (int i = rowStart; i < gridHeight; i++) {
+            for (int j = colStart; j < gridWidth; j++){
                 if (board[i][j] == wordIndex && i != row && j != col)
                     return false;
             }
