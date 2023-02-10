@@ -15,6 +15,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.lima.model.VocabSudokuBoard;
+import com.lima.model.WordPair;
 
 import org.w3c.dom.Text;
 
@@ -34,6 +35,7 @@ public class SudokuGameActivity extends AppCompatActivity {
     private final TextView[][] cells = new TextView[BOARD_SIDE][BOARD_SIDE];
     private final TextView[] wordButtons = new TextView[BOARD_SIDE];
     private TextView clearButton;
+    private TextView displayWord;
 
     private int selectedActionButtonIndex = BOARD_SIDE;
     private int selectedCellIndex = -1;
@@ -50,6 +52,7 @@ public class SudokuGameActivity extends AppCompatActivity {
 
         populateSudokuBoard();
         populateWordButtons();
+        setUpDisplayWordField();
         setUpClearButton();
     }
 
@@ -156,6 +159,11 @@ public class SudokuGameActivity extends AppCompatActivity {
         }
     }
 
+
+    private void setUpDisplayWordField() {
+        this.displayWord = findViewById(R.id.wordDisplay);
+    }
+
     private void setUpClearButton() {
         this.clearButton = findViewById(R.id.clearButton);
         clearButton.setOnClickListener(view -> onActionButtonClick(-1));
@@ -175,6 +183,8 @@ public class SudokuGameActivity extends AppCompatActivity {
 
                 // Update word on screen
                 cells[rowIndex][colIndex].setText(board.getWord(selectedActionButtonIndex).getNativeWord());
+
+                updateWordDisplay(rowIndex, colIndex);
             }
 
             // Deselected the cell and update selected index
@@ -189,6 +199,8 @@ public class SudokuGameActivity extends AppCompatActivity {
                 int currentSelectedCol = selectedCellIndex % BOARD_SIDE;
                 setCellBackgroundColor(currentSelectedRow, currentSelectedCol);
             }
+
+            updateWordDisplay(rowIndex, colIndex);
 
             // If the current cell is already selected, unselect it
             if (rowIndex == selectedCellIndex / BOARD_SIDE && colIndex == selectedCellIndex % BOARD_SIDE) {
@@ -219,6 +231,8 @@ public class SudokuGameActivity extends AppCompatActivity {
 
                 // Update the word on the screen
                 cells[rowIndex][colIndex].setText(board.getWord(selectedActionButtonIndex).getNativeWord());
+
+                updateWordDisplay(rowIndex, colIndex);
             }
 
             // Reset both buttons
@@ -335,5 +349,21 @@ public class SudokuGameActivity extends AppCompatActivity {
             clearButton.setBackgroundResource(R.drawable.backspace_background_purple);
         else
             wordButtons[actionIndex].setBackgroundResource(R.drawable.rounded_corner_purple);
+    }
+
+    private void updateWordDisplay(int row, int col) {
+        StringBuilder builder = new StringBuilder();
+
+        int wordIndex = board.getCell(row, col);
+        if (wordIndex == -1) {
+            displayWord.setText(builder.toString());
+            return;
+        }
+
+        WordPair wordPair = board.getWord(wordIndex);
+        builder.append(wordPair.getNativeWord());
+        builder.append(" - ");
+        builder.append(wordPair.getForeignWord());
+        displayWord.setText(builder.toString());
     }
 }
