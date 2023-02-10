@@ -64,6 +64,8 @@ public class VocabSudokuBoard {
     }
 
     public WordPair getWord(int wordIndex) {
+        if (wordIndex == -1)
+            return new WordPair("", "");
         return wordList[wordIndex];
     }
 

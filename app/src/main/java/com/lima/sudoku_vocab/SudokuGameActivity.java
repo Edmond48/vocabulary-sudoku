@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.lima.model.VocabSudokuBoard;
 
+import org.w3c.dom.Text;
+
 public class SudokuGameActivity extends AppCompatActivity {
 
     public static final double WORDS_PER_ROW = 3.0;
@@ -31,6 +33,7 @@ public class SudokuGameActivity extends AppCompatActivity {
 
     private final TextView[][] cells = new TextView[BOARD_SIDE][BOARD_SIDE];
     private final TextView[] wordButtons = new TextView[BOARD_SIDE];
+    private TextView clearButton;
 
     private int selectedActionButtonIndex = BOARD_SIDE;
     private int selectedCellIndex = -1;
@@ -47,6 +50,7 @@ public class SudokuGameActivity extends AppCompatActivity {
 
         populateSudokuBoard();
         populateWordButtons();
+        setUpClearButton();
     }
 
     // TODO When model classes are ready, incorporate them here
@@ -152,6 +156,11 @@ public class SudokuGameActivity extends AppCompatActivity {
         }
     }
 
+    private void setUpClearButton() {
+        this.clearButton = findViewById(R.id.clearButton);
+        clearButton.setOnClickListener(view -> onActionButtonClick(-1));
+    }
+
     private void onCellClick(int rowIndex, int colIndex) {
         // If there is an action button already selected
         if (selectedActionButtonIndex < BOARD_SIDE) {
@@ -213,7 +222,7 @@ public class SudokuGameActivity extends AppCompatActivity {
             }
 
             // Reset both buttons
-            wordButtons[selectedActionButtonIndex].setBackgroundResource(R.drawable.rounded_corner_blue);
+            setActionButtonBackgroundDefault(selectedActionButtonIndex);
             setCellBackgroundColor(rowIndex, colIndex);
             selectedActionButtonIndex = BOARD_SIDE;
             selectedCellIndex = -1;
@@ -222,8 +231,8 @@ public class SudokuGameActivity extends AppCompatActivity {
         // Only action button is selected
         else {
             // Un-highlight action button
-            if (selectedActionButtonIndex < BOARD_SIDE && selectedActionButtonIndex > -1)
-                wordButtons[selectedActionButtonIndex].setBackgroundResource(R.drawable.rounded_corner_blue);
+            if (selectedActionButtonIndex < BOARD_SIDE)
+                setActionButtonBackgroundDefault(selectedActionButtonIndex);
 
             // If the action button is already selected, unselect it
             if (selectedActionButtonIndex == wordIndex) {
@@ -233,7 +242,7 @@ public class SudokuGameActivity extends AppCompatActivity {
 
             // Set new word button and highlight it
             selectedActionButtonIndex = wordIndex;
-            wordButtons[selectedActionButtonIndex].setBackgroundResource(R.drawable.rounded_corner_purple);
+            setActionButtonBackGroundSelected(selectedActionButtonIndex);
         }
     }
 
@@ -312,5 +321,19 @@ public class SudokuGameActivity extends AppCompatActivity {
             cells[row][col].setBackgroundColor(SECONDARY_CELL_COLOR);
         else
             cells[row][col].setBackgroundColor(PRIMARY_CELL_COLOR);
+    }
+
+    private void setActionButtonBackgroundDefault(int actionIndex) {
+        if (actionIndex == -1)
+            clearButton.setBackgroundResource(R.drawable.backspace_background_blue);
+        else
+            wordButtons[actionIndex].setBackgroundResource(R.drawable.rounded_corner_blue);
+    }
+
+    private void setActionButtonBackGroundSelected(int actionIndex) {
+        if (actionIndex == -1)
+            clearButton.setBackgroundResource(R.drawable.backspace_background_purple);
+        else
+            wordButtons[actionIndex].setBackgroundResource(R.drawable.rounded_corner_purple);
     }
 }
