@@ -159,7 +159,7 @@ public class VocabSudokuBoard {
         StringBuilder boardStr = new StringBuilder();
         for (int i = 0; i < dimension; i++) {
             for (int j = 0; j < dimension; j++) {
-                boardStr.append(board[i][j]).append("\t");
+                boardStr.append(String.format("%4s", board[i][j]));
             }
             boardStr.append("\n");
         }
