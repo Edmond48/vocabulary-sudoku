@@ -11,42 +11,44 @@ public class VocabSudokuBoard {
     private static final int DEFAULT_SUBGRID_HEIGHT = 3;
     private static final int DEFAULT_SUBGRID_WIDTH = 3;
 
-    private final int dimension = DEFAULT_DIMENSION;
+    private int dimension = DEFAULT_DIMENSION;
 
-    private final int gridWidth = DEFAULT_SUBGRID_WIDTH;
-    private final int gridHeight = DEFAULT_SUBGRID_HEIGHT;
+    private int gridWidth = DEFAULT_SUBGRID_WIDTH;
+    private int gridHeight = DEFAULT_SUBGRID_HEIGHT;
 
     private int[][] board;
     private boolean[][] isFixed;
     private WordPair[] wordList;
 
     public VocabSudokuBoard() {
-        board = new int[dimension][dimension];
+        this.board = new int[dimension][dimension];
+        this.isFixed = new boolean[dimension][dimension];
+
         for (int i = 0; i < dimension; i++) {
             for (int j = 0; j < dimension; j++){
-                board[i][j] = -1;
+                this.board[i][j] = -1;
+                this.isFixed[i][j] = false;
             }
         }
 
-        isFixed = new boolean[dimension][dimension];
-        for (int i = 0; i < dimension; i++) {
-            for (int j = 0; j < dimension; j++){
-                isFixed[i][j] = false;
-            }
-        }
-
-        wordList = new WordPair[dimension];
-        wordList[0] = new WordPair("apple", "tao");
-        wordList[1] = new WordPair("bee", "ong");
-        wordList[2] = new WordPair("car", "xe");
-        wordList[3] = new WordPair("decide", "quyet dinh");
-        wordList[4] = new WordPair("extra", "them");
-        wordList[5] = new WordPair("find", "tim");
-        wordList[6] = new WordPair("guide", "huong dan");
-        wordList[7] = new WordPair("home", "nha");
-        wordList[8] = new WordPair("interesting", "thu vi");
+        fillWordList();
 
         generateBoard(DIFFICULTY_EASY);
+    }
+
+    VocabSudokuBoard(int[][] board) {
+        this.dimension = board.length;
+        this.board = new int[dimension][dimension];
+        this.isFixed = new boolean[dimension][dimension];
+
+        for (int i = 0; i < dimension; i++) {
+            for (int j = 0; j < dimension; j++){
+                this.board[i][j] = board[i][j];
+                this.isFixed[i][j] = (board[i][j] != -1);
+            }
+        }
+
+        fillWordList();
     }
 
     public int getCell(int row, int col) {
@@ -176,6 +178,21 @@ public class VocabSudokuBoard {
         }
     }
 
+    // temporary method to fill in word list with hard-coded values
+    // used while the app's word list feature has not been developed
+    private void fillWordList(){
+        wordList = new WordPair[dimension];
+        wordList[0] = new WordPair("apple", "tao");
+        wordList[1] = new WordPair("bee", "ong");
+        wordList[2] = new WordPair("car", "xe");
+        wordList[3] = new WordPair("decide", "quyet dinh");
+        wordList[4] = new WordPair("extra", "them");
+        wordList[5] = new WordPair("find", "tim");
+        wordList[6] = new WordPair("guide", "huong dan");
+        wordList[7] = new WordPair("home", "nha");
+        wordList[8] = new WordPair("interesting", "thu vi");
+    }
+
     public static void main(String[] args) {
         int[] myArr = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 
@@ -185,7 +202,18 @@ public class VocabSudokuBoard {
             System.out.print(myArr[i] + ", ");
         System.out.println(myArr[myArr.length - 1] + "}");
 
-        VocabSudokuBoard myBoard = new VocabSudokuBoard();
+        int[][] matrix = {
+                {1, 2, 3, 4, 5, 6, 7, 8, 0},
+                {-1, -1, -1, -1, -1, -1, -1, -1, 8},
+                {2, 4, 5, -1, 1, 0, -1, 5, 0},
+                {3, 8, 0, -1, -1, -1, -1, 3, -1},
+                {3, 5, 7, -1, -1, 0, 7, 2, 1},
+                {-1, -1, -1, -1, -1, -1, -1, -1, -1},
+                {4, 5, 7, -1, 3, 0, 1, 2, 8},
+                {-1 , -1, -1, 2, 4, 6, 4, 7, 0},
+                {0, 1, 2, 3, 5, 6, 8, 7, -1},
+                };
+        VocabSudokuBoard myBoard = new VocabSudokuBoard(matrix);
         System.out.print(myBoard);
     }
 }
