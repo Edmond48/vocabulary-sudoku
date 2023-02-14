@@ -4,7 +4,7 @@
 
 **User story**: As a vocabulary learner practicing at home, I want to use my tablet for Sudoku vocabulary practice, so that the words will be conveniently displayed in larger, easier to read fonts. 
 
-**TDD example**: The sudoku game will have larger and easier to read fonts for larger device screen sizes. (i.e. if the device screen size is larger, the sudoku board tiles are larger alongside its words, and buttons.)
+**TDD example**: The sudoku game will have larger and easier to read fonts for larger device screen sizes. (i.e. if the device screen size is larger, the sudoku board tiles are larger alongside the words and buttons.)
 
 ## 2. Orientation of device
 
