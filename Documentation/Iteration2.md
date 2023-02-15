@@ -4,13 +4,13 @@
 
 **User story**: As a vocabulary learner practicing at home, I want to use my tablet for Sudoku vocabulary practice, so that the words will be conveniently displayed in larger, easier to read fonts. 
 
-**TDD example**: The sudoku game will have larger and easier to read fonts for larger device screen sizes. (i.e. if the device screen size is larger, the sudoku board tiles are larger alongside the words and buttons.)
+**TDD example**: The sudoku game will operate on multiple devices and have larger and easier to read fonts for larger device screen sizes. (i.e. if the device screen size is larger, the sudoku board tiles are larger alongside the words and buttons.)
 
 ## 2. Orientation of device
 
 **User story**: As a vocabulary learner taking the bus, I want to use my phone in landscape mode for Sudoku vocabulary practice, so that longer words are displayed in a larger font than standard mode.
 
-**TDD example**: The sudoku game will be able to go in portrait mode and landscape mode by tilting your phone 45 degrees from either position. In landscape mode, longer words are displayed with a larger font than the standard portrait mode and the text boxes and board tiles will be larger as well.
+**TDD example**: The sudoku game will be able to switch between portrait mode and landscape mode by tilting your phone 45 degrees from either position. In landscape mode, longer words are displayed with a larger font than the standard portrait mode and the text boxes/board tiles will be larger as well.
 
 
 ## 3. Different Size Sudoku Grids
