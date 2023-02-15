@@ -2,24 +2,40 @@ package com.lima.model;
 
 public class VocabSudokuBoard {
 
+    // Public difficulty constants, represent the proportion of pre-filled cells
     public static final float DIFFICULTY_EASY = 0.45f;
     public static final float DIFFICULTY_MEDIUM = 0.30f;
     public static final float DIFFICULTY_HARD = 0.15f;
+
+    // constant representing empty cell
     public static final int EMPTY_WORD = -1;
 
+    // Default board dimension and sub-grid
     private static final int DEFAULT_DIMENSION = 9;
     private static final int DEFAULT_SUBGRID_HEIGHT = 3;
     private static final int DEFAULT_SUBGRID_WIDTH = 3;
 
+    // TODO fix default value when menu is ready
+    // private member variables for board dimension and subgrid
     private int dimension = DEFAULT_DIMENSION;
 
     private int gridWidth = DEFAULT_SUBGRID_WIDTH;
     private int gridHeight = DEFAULT_SUBGRID_HEIGHT;
 
+    // board containing values 0 - (dimension - 1) which encodes the wordPairs used
+    // special value: -1 means empty cell
     private int[][] board;
+
+    // keeps track of which cell is pre-filled, users cannot overwrite such cells
     private boolean[][] isFixed;
+
+    // list of wordPairs
+    // use the numbers in board[][] correspond with the index
     private WordPair[] wordList;
 
+    // TODO change to parameterized constructor for difficulty mode
+    // default constructor
+    // Creates a 9x9 board and fill 45% of the cells (easy mode)
     public VocabSudokuBoard() {
         this.board = new int[dimension][dimension];
         this.isFixed = new boolean[dimension][dimension];
@@ -36,6 +52,8 @@ public class VocabSudokuBoard {
         generateBoard(DIFFICULTY_EASY);
     }
 
+    // constructor build a board from a matrix of integers
+    // assumes that the matrix is square
     VocabSudokuBoard(int[][] board) {
         this.dimension = board.length;
         this.board = new int[dimension][dimension];
@@ -48,15 +66,18 @@ public class VocabSudokuBoard {
             }
         }
 
+        // TODO fix hardcoded values, see function definition
         fillWordList();
     }
 
+    // get the integer representing the word pair at the given row and column index
     public int getCell(int row, int col) {
         if (row >= dimension || col >= dimension)
             throw new IllegalArgumentException();
         return board[row][col];
     }
 
+    // set the integer representing the word pair at the given row and column index
     public void setCell(int row, int col, int wordIndex) {
         if (isFixed[row][col])
             return;
@@ -65,12 +86,14 @@ public class VocabSudokuBoard {
         board[row][col] = Math.max(wordIndex, -1);
     }
 
+    // get the word from the corresponding index
     public WordPair getWord(int wordIndex) {
         if (wordIndex == -1)
             return new WordPair("", "");
         return wordList[wordIndex];
     }
 
+    // getters
     public int getDimension() {
         return dimension;
     }
@@ -87,17 +110,20 @@ public class VocabSudokuBoard {
         return isFixed[row][col];
     }
 
+    // fill in the board and generate a valid puzzle
+    // TODO fix a bug where a generated board is valid but not solvable
     private void generateBoard(float difficulty) {
+        // generate a list of random coordinates
         int[] coordinates = new int[dimension * dimension];
         int targetNumFilledCells = (int) Math.floor(difficulty * dimension * dimension);
 
         for (int i = 0; i < coordinates.length; i++)
             coordinates[i] = i;
 
-        // shuffle
         shuffle(coordinates);
 
         // fill in cells randomly
+        // TODO the bug is produced here when the cells are valid but from the user's perspective, there are no logical move
         for (int i = 0; i < targetNumFilledCells; i++) {
             int row = coordinates[i] / dimension;
             int col = coordinates[i] % dimension;
@@ -119,6 +145,7 @@ public class VocabSudokuBoard {
         }
     }
 
+    // validate a cell by checking its row, column, and sub-grid for duplication
     private boolean validateCell(int row, int col) {
         int wordIndex = board[row][col];
 
@@ -155,6 +182,8 @@ public class VocabSudokuBoard {
     }
 
     @Override
+    // create a string from the current board
+    // for testing
     public String toString() {
         StringBuilder boardStr = new StringBuilder();
         for (int i = 0; i < dimension; i++) {
@@ -166,6 +195,7 @@ public class VocabSudokuBoard {
         return boardStr.toString();
     }
 
+    // shuffle a given array
     private static void shuffle(int[] arr) {
         for (int i = 0; i < arr.length; i++) {
             // generate index for element at i between i and arr.length - 1
@@ -180,6 +210,7 @@ public class VocabSudokuBoard {
 
     // temporary method to fill in word list with hard-coded values
     // used while the app's word list feature has not been developed
+    // TODO remove this when word list feature is implemented, should not test
     private void fillWordList(){
         wordList = new WordPair[dimension];
         wordList[0] = new WordPair("apple", "tao");
@@ -193,6 +224,7 @@ public class VocabSudokuBoard {
         wordList[8] = new WordPair("interesting", "thu vi");
     }
 
+    // main function for testing
     public static void main(String[] args) {
         int[] myArr = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 
