@@ -21,23 +21,41 @@ import org.w3c.dom.Text;
 
 public class SudokuGameActivity extends AppCompatActivity {
 
+    // number of word buttons per row
     public static final double WORDS_PER_ROW = 3.0;
+
+    // colors for UI control
     private int PRIMARY_CELL_COLOR;
     private int SECONDARY_CELL_COLOR;
     private int FIXED_CELL_COLOR;
     private int HIGHLIGHT_COLOR;
     
-    
+    // board object
     VocabSudokuBoard board = new VocabSudokuBoard();
 
+    // board dimension
     private final int BOARD_SIDE = board.getDimension();
 
+    // 2D array for all TextView cells
     private final TextView[][] cells = new TextView[BOARD_SIDE][BOARD_SIDE];
+
+    // 1D array for TextView buttons
     private final TextView[] wordButtons = new TextView[BOARD_SIDE];
+
+    // clear button
     private TextView clearButton;
+
+    // the field for displaying a word pair
     private TextView displayWord;
 
+    // index of the currently selected action button
+    // 0 to (dimension - 1) corresponds with index of the word pair in board[][]
+    // -1 corresponds to clear button
+    // BOARD_SIDE means no button is selected
     private int selectedActionButtonIndex = BOARD_SIDE;
+
+    // cell goes from 0 to (dimension^2-1)
+    // -1 means no cell is selected
     private int selectedCellIndex = -1;
 
     @Override
@@ -85,6 +103,7 @@ public class SudokuGameActivity extends AppCompatActivity {
                 );
 
                 // hacky solution to create border around sub-grids
+                // TODO generalize the sub-grid display to work
                 int bigMarginValue = 10;
                 int smallMarginValue = 2;
                 int bottomMargin = i == 2 || i == 5 ? bigMarginValue : smallMarginValue;
@@ -97,7 +116,7 @@ public class SudokuGameActivity extends AppCompatActivity {
 
                 cell.setPadding(1, 1, 1, 1);
 
-                // Toast the coordinate when a cell is clicked
+                // set up onClick behavior
                 cell.setOnClickListener(
                         view -> onCellClick(rowIndex, colIndex)
                 );
@@ -355,11 +374,14 @@ public class SudokuGameActivity extends AppCompatActivity {
         StringBuilder builder = new StringBuilder();
 
         int wordIndex = board.getCell(row, col);
+
+        // if cell is empty
         if (wordIndex == -1) {
             displayWord.setText(builder.toString());
             return;
         }
 
+        // display non-empty cell
         WordPair wordPair = board.getWord(wordIndex);
         builder.append(wordPair.getNativeWord());
         builder.append(" - ");
