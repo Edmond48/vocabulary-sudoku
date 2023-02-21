@@ -79,10 +79,10 @@ public class VocabSudokuBoard {
 
     // set the integer representing the word pair at the given row and column index
     public void setCell(int row, int col, int wordIndex) {
-        if (isFixed[row][col])
-            return;
         if (row >= dimension || col >= dimension || wordIndex >= dimension)
             throw new IllegalArgumentException();
+        if (isFixed[row][col])
+            return;
         board[row][col] = Math.max(wordIndex, -1);
     }
 
