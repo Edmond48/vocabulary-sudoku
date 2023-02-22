@@ -17,6 +17,8 @@
 
 **User story**: As a teacher of elementary and junior high school children, I want scaled versions of Sudoku that use 4x4 and 6x6 grids. In the 6x6 grid version, the overall grid should be divided into rectangles of six cells each (2x3).
 
+**User story**: As a vocabulary learner who wants an extra challenging mode, I want a 12x12 version of Sudoku to play on my tablet. The overall grid should be divided into rectangles of 12 cells each (3x4).
+
 **TDD example**: After selecting a difficulty, the user is prompted with choosing between a 4x4, 6x6, 9x9 and 12x12 version of Sudoku. (The (4x4) version of sudoku is divided into squares of four cells each (2x2), 
 the (6x6) version of sudoku is divided into rectangles of six cells each (2x3), the (9x9) version of sudoku is divided into squares of 9 cells each (3x3), and the (12x12) version of sudoku is divided into rectangles 
 of 12 cells each (4x3)). More words will be presented below for larger boards of sudoku (i.e. 4x4 will have 4 words while 12x12 will have 12 words).
