@@ -4,47 +4,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainMenuActivity">
+    tools:context=".DifficultyMenuActivity">
 
-    <TextView
-        android:id="@+id/game_title"
+    <Button
+        android:id="@+id/easy_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="72dp"
-        android:layout_marginEnd="60dp"
-        android:background="@drawable/menu_round_corner_blue_background"
-        android:gravity="center"
-        android:text="@string/game_title"
-        android:textAlignment="center"
-        android:textSize="48sp"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="144dp"
+        android:layout_marginEnd="84dp"
+        android:background="@drawable/menu_button_background"
+        android:text="@string/easy"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/classic_mode_btn"
+        android:id="@+id/medium_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
         android:layout_marginTop="72dp"
-        android:layout_marginEnd="24dp"
         android:background="@drawable/menu_button_background"
-        android:text="@string/classic_mode"
+        android:text="@string/medium"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="@+id/game_title"
-        app:layout_constraintStart_toStartOf="@+id/game_title"
-        app:layout_constraintTop_toBottomOf="@+id/game_title" />
+        app:layout_constraintEnd_toEndOf="@+id/easy_btn"
+        app:layout_constraintStart_toStartOf="@+id/easy_btn"
+        app:layout_constraintTop_toBottomOf="@+id/easy_btn" />
 
     <Button
-        android:id="@+id/reverse_mode_btn"
+        android:id="@+id/hard_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="72dp"
         android:background="@drawable/menu_button_background"
-        android:text="@string/reverse_mode"
+        android:text="@string/hard"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="@+id/classic_mode_btn"
-        app:layout_constraintStart_toStartOf="@+id/classic_mode_btn"
-        app:layout_constraintTop_toBottomOf="@+id/classic_mode_btn" />
+        app:layout_constraintEnd_toEndOf="@+id/medium_btn"
+        app:layout_constraintStart_toStartOf="@+id/medium_btn"
+        app:layout_constraintTop_toBottomOf="@+id/medium_btn" />
 </androidx.constraintlayout.widget.ConstraintLayout>

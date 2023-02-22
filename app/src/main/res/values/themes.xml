@@ -16,6 +16,8 @@
         <item name="android:textColorSecondary">@color/white</item>
         <item name="android:textColorTertiary">@color/white</item>
 
+        <item name="android:windowBackground">@color/dark_green</item>
+
         <!-- No action bar-->
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>

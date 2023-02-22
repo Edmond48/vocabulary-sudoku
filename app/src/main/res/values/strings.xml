@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">SudokuVocabApp</string>
     <string name="game_title">Vocabulary Sudoku</string>
+    <string name="classic_mode">Classic Mode</string>
+    <string name="reverse_mode">Reverse Mode</string>
+    <string name="easy">Easy</string>
+    <string name="medium">Medium</string>
+    <string name="hard">Hard</string>
 </resources>
