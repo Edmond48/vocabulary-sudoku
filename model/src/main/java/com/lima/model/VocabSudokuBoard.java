@@ -177,7 +177,6 @@ public class VocabSudokuBoard {
                     return false;
             }
         }
-
         return true;
     }
 
