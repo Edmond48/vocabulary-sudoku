@@ -11,13 +11,13 @@
         android:id="@+id/sudoku_table"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:padding="3dp"
-        android:stretchColumns="*"
-        android:shrinkColumns="*"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/rounded_corner_white"
+        android:padding="3dp"
+        android:shrinkColumns="*"
+        android:stretchColumns="*"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,16 +44,14 @@
     <TableLayout
         android:id="@+id/word_buttons"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="5dp"
+        android:layout_height="wrap_content"
         android:background="@color/dark_green"
         android:padding="5dp"
         android:shrinkColumns="*"
         android:stretchColumns="*"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
-        app:layout_constraintStart_toStartOf="@+id/wordDisplay"
-        app:layout_constraintTop_toBottomOf="@+id/wordDisplay" />
+        app:layout_constraintStart_toStartOf="@+id/wordDisplay" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -69,9 +67,9 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:background="@drawable/backspace_background_blue"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/word_buttons"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/wordDisplay" />
+        app:layout_constraintTop_toTopOf="@+id/word_buttons" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

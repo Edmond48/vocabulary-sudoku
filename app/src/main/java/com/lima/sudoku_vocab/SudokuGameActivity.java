@@ -196,6 +196,11 @@ public class SudokuGameActivity extends AppCompatActivity {
                 params.setMargins(5, 5, 5, 5);
                 wordBtn.setLayoutParams(params);
 
+                // set button height
+                final float scale = this.getResources().getDisplayMetrics().density;
+                int pixels = (int) (48 * scale + 0.5f);
+                wordBtn.setHeight(pixels);
+
                 wordBtn.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
                 wordBtn.setGravity(Gravity.CENTER);
                 wordBtn.setBackgroundResource(R.drawable.rounded_corner_blue);
