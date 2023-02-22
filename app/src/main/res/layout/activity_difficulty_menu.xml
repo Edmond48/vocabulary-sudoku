@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DifficultyMenuActivity">
+
+    <Button
+        android:id="@+id/easy_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="144dp"
+        android:layout_marginEnd="84dp"
+        android:background="@drawable/menu_button_background"
+        android:text="@string/easy"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/medium_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:background="@drawable/menu_button_background"
+        android:text="@string/medium"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@+id/easy_btn"
+        app:layout_constraintStart_toStartOf="@+id/easy_btn"
+        app:layout_constraintTop_toBottomOf="@+id/easy_btn" />
+
+    <Button
+        android:id="@+id/hard_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:background="@drawable/menu_button_background"
+        android:text="@string/hard"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@+id/medium_btn"
+        app:layout_constraintStart_toStartOf="@+id/medium_btn"
+        app:layout_constraintTop_toBottomOf="@+id/medium_btn" />
+</androidx.constraintlayout.widget.ConstraintLayout>

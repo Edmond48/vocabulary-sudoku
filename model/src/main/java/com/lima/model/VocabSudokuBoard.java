@@ -36,20 +36,20 @@ public class VocabSudokuBoard {
     // TODO change to parameterized constructor for difficulty mode
     // default constructor
     // Creates a 9x9 board and fill 45% of the cells (easy mode)
-    public VocabSudokuBoard() {
+    public VocabSudokuBoard(float difficulty) {
         this.board = new int[dimension][dimension];
         this.isFixed = new boolean[dimension][dimension];
 
         for (int i = 0; i < dimension; i++) {
             for (int j = 0; j < dimension; j++){
-                this.board[i][j] = -1;
+                this.board[i][j] = EMPTY_WORD;
                 this.isFixed[i][j] = false;
             }
         }
 
         fillWordList();
 
-        generateBoard(DIFFICULTY_EASY);
+        generateBoard(difficulty);
     }
 
     // constructor build a board from a matrix of integers
@@ -62,7 +62,7 @@ public class VocabSudokuBoard {
         for (int i = 0; i < dimension; i++) {
             for (int j = 0; j < dimension; j++){
                 this.board[i][j] = board[i][j];
-                this.isFixed[i][j] = (board[i][j] != -1);
+                this.isFixed[i][j] = (board[i][j] != EMPTY_WORD);
             }
         }
 
@@ -79,16 +79,16 @@ public class VocabSudokuBoard {
 
     // set the integer representing the word pair at the given row and column index
     public void setCell(int row, int col, int wordIndex) {
-        if (isFixed[row][col])
-            return;
         if (row >= dimension || col >= dimension || wordIndex >= dimension)
             throw new IllegalArgumentException();
-        board[row][col] = Math.max(wordIndex, -1);
+        if (isFixed[row][col])
+            return;
+        board[row][col] = Math.max(wordIndex, EMPTY_WORD);
     }
 
     // get the word from the corresponding index
     public WordPair getWord(int wordIndex) {
-        if (wordIndex == -1)
+        if (wordIndex == EMPTY_WORD)
             return new WordPair("", "");
         return wordList[wordIndex];
     }
@@ -140,7 +140,7 @@ public class VocabSudokuBoard {
                     isFixed[row][col] = true;
                     break;
                 }
-                board[row][col] = -1;
+                board[row][col] = EMPTY_WORD;
             }
         }
     }
@@ -150,7 +150,7 @@ public class VocabSudokuBoard {
         int wordIndex = board[row][col];
 
         // if cell is empty, validation not needed
-        if (wordIndex == -1)
+        if (wordIndex == EMPTY_WORD)
             return true;
 
         // validate row
