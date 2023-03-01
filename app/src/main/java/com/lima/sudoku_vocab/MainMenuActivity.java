@@ -26,6 +26,15 @@ public class MainMenuActivity extends AppCompatActivity {
         reverseBtn.setOnClickListener(
                 v -> onGameModeButtonClick(SudokuGameActivity.REVERSE_MODE)
         );
+
+        Button wordListBtn = findViewById(R.id.word_list_btn);
+        wordListBtn.setOnClickListener(
+                v -> onWordListButtonClick()
+        );
+    }
+
+    private void onWordListButtonClick() {
+        startActivity(WordListActivity.makeIntent(this));
     }
 
     private void onGameModeButtonClick(int mode) {

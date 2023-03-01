@@ -7,4 +7,8 @@
     <string name="medium">Medium</string>
     <string name="hard">Hard</string>
     <string name="word_list">Word List</string>
+    <string name="native_word">Native Word</string>
+    <string name="foreign_word">Foreign Word</string>
+    <string name="remove">Remove</string>
+    <string name="add">Add</string>
 </resources>

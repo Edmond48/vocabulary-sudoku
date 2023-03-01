@@ -6,4 +6,154 @@
     android:layout_height="match_parent"
     tools:context=".WordListActivity">
 
+    <TextView
+        android:id="@+id/word_list_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corner_blue"
+        android:gravity="center"
+        android:text="@string/word_list"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:padding="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/top_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/end_guideline"
+        app:layout_constraintStart_toEndOf="@+id/start_guideline"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/native_word"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@color/light_blue"
+        android:text="@string/native_word"
+        android:gravity="center"
+        android:textAlignment="center"
+        app:layout_constraintStart_toEndOf="@+id/start_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/foreign_word"
+        app:layout_constraintTop_toBottomOf="@+id/top_guideline"
+        app:layout_constraintBottom_toTopOf="@+id/word_list_view"
+        app:layout_constraintVertical_chainStyle="spread"/>
+
+    <TextView
+        android:id="@+id/foreign_word"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@color/light_blue"
+        android:text="@string/foreign_word"
+        android:gravity="center"
+        android:textAlignment="center"
+        app:layout_constraintStart_toEndOf="@+id/native_word"
+        app:layout_constraintEnd_toStartOf="@+id/end_guideline"
+        app:layout_constraintTop_toTopOf="@+id/native_word"
+        app:layout_constraintBottom_toBottomOf="@+id/native_word"/>
+
+    <ListView
+        android:id="@+id/word_list_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/foreign_word"
+        app:layout_constraintStart_toStartOf="@+id/native_word"
+        app:layout_constraintTop_toBottomOf="@+id/native_word"
+        app:layout_constraintBottom_toTopOf="@+id/editNativeWord"
+        app:layout_constraintVertical_chainStyle="spread"/>
+
+    <EditText
+        android:id="@+id/editNativeWord"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_margin="5dp"
+        android:hint="@string/native_word"
+        android:background="@color/white"
+        android:textColor="@color/black"
+        android:visibility="gone"
+        android:inputType="text"
+        app:layout_constraintEnd_toStartOf="@+id/editForeignWord"
+        app:layout_constraintStart_toEndOf="@+id/start_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/word_list_view"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_guideline"/>
+
+    <EditText
+        android:id="@+id/editForeignWord"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_margin="5dp"
+        android:hint="@string/foreign_word"
+        android:background="@color/white"
+        android:textColor="@color/black"
+        android:visibility="gone"
+        android:inputType="text"
+        app:layout_constraintEnd_toStartOf="@+id/end_guideline"
+        app:layout_constraintStart_toEndOf="@+id/editNativeWord"
+        app:layout_constraintTop_toTopOf="@+id/editNativeWord"
+        app:layout_constraintBottom_toBottomOf="@+id/editNativeWord"/>
+
+    <Button
+        android:id="@+id/removeBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/remove"
+        app:layout_constraintStart_toEndOf="@+id/start_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/addBtn"
+        app:layout_constraintTop_toBottomOf="@+id/editNativeWord"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <Button
+        android:id="@+id/addBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/add"
+        app:layout_constraintStart_toEndOf="@+id/removeBtn"
+        app:layout_constraintEnd_toStartOf="@+id/end_guideline"
+        app:layout_constraintTop_toTopOf="@+id/removeBtn"
+        app:layout_constraintBottom_toBottomOf="@+id/removeBtn"
+        />
+
+    <Button
+        android:id="@+id/confirmAddBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="Confirm"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/editNativeWord"
+        app:layout_constraintEnd_toStartOf="@+id/end_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/bottom_guideline"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/start_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/end_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/top_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.15" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottom_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.85" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
