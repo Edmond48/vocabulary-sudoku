@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -19,6 +20,7 @@ public class WordListActivity extends AppCompatActivity {
     Button addBtn;
     Button removeBtn;
     Button confirmAddBtn;
+    Button cancelAddBtn;
     EditText nativeWordEdit;
     EditText foreignWordEdit;
 
@@ -51,6 +53,7 @@ public class WordListActivity extends AppCompatActivity {
         addBtn = findViewById(R.id.addBtn);
         removeBtn = findViewById(R.id.removeBtn);
         confirmAddBtn = findViewById(R.id.confirmAddBtn);
+        cancelAddBtn = findViewById(R.id.cancelAddBtn);
         nativeWordEdit = findViewById(R.id.editNativeWord);
         foreignWordEdit = findViewById(R.id.editForeignWord);
 
@@ -61,12 +64,17 @@ public class WordListActivity extends AppCompatActivity {
         confirmAddBtn.setOnClickListener(
                 v -> onConfirmAddButtonClick()
         );
+
+        cancelAddBtn.setOnClickListener(
+                v -> onCancelAddButtonClick()
+        );
     }
 
     private void onAddButtonClick() {
         nativeWordEdit.setVisibility(View.VISIBLE);
         foreignWordEdit.setVisibility(View.VISIBLE);
         confirmAddBtn.setVisibility(View.VISIBLE);
+        cancelAddBtn.setVisibility(View.VISIBLE);
 
         addBtn.setVisibility(View.GONE);
         removeBtn.setVisibility(View.GONE);
@@ -79,17 +87,28 @@ public class WordListActivity extends AppCompatActivity {
             Toast.makeText(this, "Words cannot be empty", Toast.LENGTH_SHORT).show();
             return;
         }
-        nativeWordEdit.setText("");
-        foreignWordEdit.setText("");
         wordDB.insertRow(nativeWord, foreignWord);
         populateListViewFromDB();
+
+        resetFromAddState();
+    }
+
+    private void onCancelAddButtonClick() {
+        resetFromAddState();
+    }
+
+    private void resetFromAddState() {
+        nativeWordEdit.setText("");
+        foreignWordEdit.setText("");
 
         nativeWordEdit.setVisibility(View.GONE);
         foreignWordEdit.setVisibility(View.GONE);
         confirmAddBtn.setVisibility(View.GONE);
+        cancelAddBtn.setVisibility(View.GONE);
 
         addBtn.setVisibility(View.VISIBLE);
         removeBtn.setVisibility(View.VISIBLE);
+        closeKeyboard();
     }
 
     private void populateListViewFromDB() {
@@ -120,9 +139,26 @@ public class WordListActivity extends AppCompatActivity {
         myList.setAdapter(myCursorAdapter);
     }
 
+    private void closeKeyboard()
+    {
+        // this will give us the view
+        // which is currently focus
+        // in this layout
+        View view = this.getCurrentFocus();
+
+        // if nothing is currently
+        // focus then this will protect
+        // the app from crash
+        if (view != null) {
+
+            // now assign the system
+            // service to InputMethodManager
+            InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
 
     public static Intent makeIntent(Context context) {
-        Intent intent = new Intent(context, WordListActivity.class);
-        return intent;
+        return new Intent(context, WordListActivity.class);
     }
 }
