@@ -188,18 +188,13 @@ public class SudokuGameActivity extends AppCompatActivity {
                 TextView wordBtn = new TextView(this);
 
                 TableRow.LayoutParams params = new TableRow.LayoutParams(
-                        TableRow.LayoutParams.WRAP_CONTENT,
+                        TableRow.LayoutParams.MATCH_PARENT,
                         TableRow.LayoutParams.MATCH_PARENT,
                         1.0f
                 );
 
                 params.setMargins(5, 5, 5, 5);
                 wordBtn.setLayoutParams(params);
-
-                // set button height
-                final float scale = this.getResources().getDisplayMetrics().density;
-                int pixels = (int) (48 * scale + 0.5f);
-                wordBtn.setHeight(pixels);
 
                 wordBtn.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
                 wordBtn.setGravity(Gravity.CENTER);
