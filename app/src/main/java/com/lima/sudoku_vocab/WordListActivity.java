@@ -6,21 +6,37 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class WordListActivity extends AppCompatActivity {
 
+    public static final String TAG = "WordListActivity";
     DBAdapter wordDB;
+    ListView wordList;
+
+    TextView modeText;
+
     Button addBtn;
     Button removeBtn;
+
     Button confirmAddBtn;
     Button cancelAddBtn;
+
+    long selectedRemoveItemId = -1;
+    Button confirmRemoveBtn;
+    Button cancelRemoveBtn;
+    Button removeAllBtn;
+    TextView removeInfo;
+
     EditText nativeWordEdit;
     EditText foreignWordEdit;
 
@@ -50,10 +66,21 @@ public class WordListActivity extends AppCompatActivity {
     }
 
     private void configureViews() {
+        modeText = findViewById(R.id.word_list_text);
+
+        wordList = findViewById(R.id.word_list_view);
+
         addBtn = findViewById(R.id.addBtn);
         removeBtn = findViewById(R.id.removeBtn);
+
         confirmAddBtn = findViewById(R.id.confirmAddBtn);
         cancelAddBtn = findViewById(R.id.cancelAddBtn);
+
+        confirmRemoveBtn = findViewById(R.id.confirmRemoveBtn);
+        cancelRemoveBtn = findViewById(R.id.cancelRemoveBtn);
+        removeAllBtn = findViewById(R.id.removeAllBtn);
+        removeInfo = findViewById(R.id.remove_info_text);
+
         nativeWordEdit = findViewById(R.id.editNativeWord);
         foreignWordEdit = findViewById(R.id.editForeignWord);
 
@@ -68,9 +95,26 @@ public class WordListActivity extends AppCompatActivity {
         cancelAddBtn.setOnClickListener(
                 v -> onCancelAddButtonClick()
         );
+
+        removeBtn.setOnClickListener(
+                v -> onRemoveButtonClick()
+        );
+
+        confirmRemoveBtn.setOnClickListener(
+                v -> onConfirmRemoveButtonClick()
+        );
+
+        cancelRemoveBtn.setOnClickListener(
+                v -> onCancelRemoveButtonClick()
+        );
+
+        removeAllBtn.setOnClickListener(
+                v -> onRemoveAllButtonClick()
+        );
     }
 
     private void onAddButtonClick() {
+        modeText.setText(R.string.add_mode);
         nativeWordEdit.setVisibility(View.VISIBLE);
         foreignWordEdit.setVisibility(View.VISIBLE);
         confirmAddBtn.setVisibility(View.VISIBLE);
@@ -78,6 +122,36 @@ public class WordListActivity extends AppCompatActivity {
 
         addBtn.setVisibility(View.GONE);
         removeBtn.setVisibility(View.GONE);
+    }
+
+    private void onRemoveButtonClick() {
+        modeText.setText(R.string.remove_mode);
+        removeAllBtn.setVisibility(View.VISIBLE);
+        confirmRemoveBtn.setVisibility(View.VISIBLE);
+        cancelRemoveBtn.setVisibility(View.VISIBLE);
+        removeInfo.setVisibility(View.VISIBLE);
+
+        addBtn.setVisibility(View.GONE);
+        removeBtn.setVisibility(View.GONE);
+
+        wordList.setOnItemClickListener((parent, viewClicked, position, idDB) -> {
+
+            selectedRemoveItemId = idDB;
+            Log.i(TAG, "Clicked on item with database ID " + idDB);
+            updateRemoveInfoField(idDB);
+        });
+    }
+
+    private void updateRemoveInfoField(long idDB) {
+        Cursor cursor = wordDB.getRow(idDB);
+        if (cursor.moveToFirst()) {
+            removeInfo.setText(
+                    getResources().getString(R.string.remove_info_pair,
+                            cursor.getString(DBAdapter.COL_NATIVE_WORD),
+                            cursor.getString(DBAdapter.COL_FOREIGN_WORD))
+            );
+        }
+        cursor.close();
     }
 
     private void onConfirmAddButtonClick() {
@@ -97,7 +171,29 @@ public class WordListActivity extends AppCompatActivity {
         resetFromAddState();
     }
 
+    private void onConfirmRemoveButtonClick() {
+        if (selectedRemoveItemId == -1) {
+            Toast.makeText(this, "Please select a word pair to remove", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        wordDB.deleteRow(selectedRemoveItemId);
+        populateListViewFromDB();
+
+        resetFromRemoveState();
+    }
+
+    private void onCancelRemoveButtonClick() {
+        resetFromRemoveState();
+    }
+
+    private void onRemoveAllButtonClick() {
+        wordDB.deleteAll();
+        populateListViewFromDB();
+        resetFromRemoveState();
+    }
+
     private void resetFromAddState() {
+        modeText.setText(R.string.word_list);
         nativeWordEdit.setText("");
         foreignWordEdit.setText("");
 
@@ -109,6 +205,22 @@ public class WordListActivity extends AppCompatActivity {
         addBtn.setVisibility(View.VISIBLE);
         removeBtn.setVisibility(View.VISIBLE);
         closeKeyboard();
+    }
+
+    private void resetFromRemoveState() {
+        modeText.setText(R.string.word_list);
+        confirmRemoveBtn.setVisibility(View.GONE);
+        cancelRemoveBtn.setVisibility(View.GONE);
+        removeInfo.setText(R.string.remove_instruction);
+        removeInfo.setVisibility(View.GONE);
+        removeAllBtn.setVisibility(View.GONE);
+
+        addBtn.setVisibility(View.VISIBLE);
+        removeBtn.setVisibility(View.VISIBLE);
+
+        selectedRemoveItemId = -1;
+        wordList.setOnItemClickListener((parent, viewClicked, position, idDB) -> {
+        });
     }
 
     private void populateListViewFromDB() {

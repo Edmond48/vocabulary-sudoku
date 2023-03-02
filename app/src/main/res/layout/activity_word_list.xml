@@ -56,11 +56,41 @@
         android:id="@+id/word_list_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginBottom="3dp"
         app:layout_constraintEnd_toEndOf="@+id/foreign_word"
         app:layout_constraintStart_toStartOf="@+id/native_word"
         app:layout_constraintTop_toBottomOf="@+id/native_word"
-        app:layout_constraintBottom_toTopOf="@+id/editNativeWord"
+        app:layout_constraintBottom_toTopOf="@+id/remove_info_text"
         app:layout_constraintVertical_chainStyle="spread"/>
+
+    <TextView
+        android:id="@+id/remove_info_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@color/white"
+        android:textColor="@color/black"
+        android:text="@string/remove_instruction"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/start_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/end_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/word_list_view"
+        app:layout_constraintBottom_toTopOf="@+id/removeAllBtn" />
+
+    <Button
+        android:id="@+id/removeAllBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/remove_all"
+        app:backgroundTint="@color/red"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/start_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/end_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/remove_info_text"
+        app:layout_constraintBottom_toTopOf="@+id/editNativeWord"/>
 
     <EditText
         android:id="@+id/editNativeWord"
@@ -74,9 +104,10 @@
         android:visibility="gone"
         android:inputType="text"
         android:importantForAutofill="noExcludeDescendants"
+        android:padding="10dp"
         app:layout_constraintEnd_toStartOf="@+id/editForeignWord"
         app:layout_constraintStart_toEndOf="@+id/start_guideline"
-        app:layout_constraintTop_toBottomOf="@+id/word_list_view"
+        app:layout_constraintTop_toBottomOf="@+id/removeAllBtn"
         app:layout_constraintBottom_toTopOf="@+id/bottom_guideline"/>
 
     <EditText
@@ -91,6 +122,7 @@
         android:visibility="gone"
         android:inputType="text"
         android:importantForAutofill="noExcludeDescendants"
+        android:padding="10dp"
         app:layout_constraintEnd_toStartOf="@+id/end_guideline"
         app:layout_constraintStart_toEndOf="@+id/editNativeWord"
         app:layout_constraintTop_toTopOf="@+id/editNativeWord"
@@ -142,6 +174,30 @@
         app:layout_constraintEnd_toStartOf="@+id/end_guideline"
         app:layout_constraintTop_toTopOf="@+id/cancelAddBtn"
         app:layout_constraintBottom_toBottomOf="@+id/cancelAddBtn"/>
+
+    <Button
+        android:id="@+id/cancelRemoveBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/cancel"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/start_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/confirmRemoveBtn"
+        app:layout_constraintTop_toBottomOf="@+id/bottom_guideline"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <Button
+        android:id="@+id/confirmRemoveBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/confirm"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/cancelRemoveBtn"
+        app:layout_constraintEnd_toStartOf="@+id/end_guideline"
+        app:layout_constraintTop_toTopOf="@+id/cancelRemoveBtn"
+        app:layout_constraintBottom_toBottomOf="@+id/cancelRemoveBtn"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/start_guideline"
