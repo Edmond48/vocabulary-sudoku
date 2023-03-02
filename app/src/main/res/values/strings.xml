@@ -6,4 +6,16 @@
     <string name="easy">Easy</string>
     <string name="medium">Medium</string>
     <string name="hard">Hard</string>
+    <string name="word_list">Word List</string>
+    <string name="native_word">Native Word</string>
+    <string name="foreign_word">Foreign Word</string>
+    <string name="remove">Remove</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="remove_instruction">Click on a word pair to select it</string>
+    <string name="add_mode">Adding-Word Mode</string>
+    <string name="remove_mode">Removing-Word Mode</string>
+    <string name="remove_all">Remove All</string>
+    <string name="remove_info_pair">\"%1$s - %2$s\" is selected for removal"</string>
 </resources>

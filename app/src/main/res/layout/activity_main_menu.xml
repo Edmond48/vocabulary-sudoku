@@ -10,28 +10,27 @@
         android:id="@+id/game_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="72dp"
-        android:layout_marginEnd="60dp"
         android:background="@drawable/menu_round_corner_blue_background"
         android:gravity="center"
         android:text="@string/game_title"
         android:textAlignment="center"
         android:textSize="48sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/classic_mode_btn"
+        app:layout_constraintEnd_toEndOf="@+id/end_guideline"
+        app:layout_constraintStart_toStartOf="@+id/start_guideline"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread" />
 
     <Button
         android:id="@+id/classic_mode_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="72dp"
         android:layout_marginEnd="24dp"
         android:background="@drawable/menu_button_background"
         android:text="@string/classic_mode"
         android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/reverse_mode_btn"
         app:layout_constraintEnd_toEndOf="@+id/game_title"
         app:layout_constraintStart_toStartOf="@+id/game_title"
         app:layout_constraintTop_toBottomOf="@+id/game_title" />
@@ -40,11 +39,38 @@
         android:id="@+id/reverse_mode_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
         android:background="@drawable/menu_button_background"
         android:text="@string/reverse_mode"
         android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/word_list_btn"
         app:layout_constraintEnd_toEndOf="@+id/classic_mode_btn"
         app:layout_constraintStart_toStartOf="@+id/classic_mode_btn"
         app:layout_constraintTop_toBottomOf="@+id/classic_mode_btn" />
+
+    <Button
+        android:id="@+id/word_list_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/menu_button_background"
+        android:text="@string/word_list"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@+id/reverse_mode_btn"
+        app:layout_constraintStart_toStartOf="@+id/reverse_mode_btn"
+        app:layout_constraintTop_toBottomOf="@+id/reverse_mode_btn"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/start_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/end_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
