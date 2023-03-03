@@ -6,30 +6,31 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.SparseBooleanArray;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.lima.model.VocabSudokuBoard;
 import com.lima.model.WordPair;
 
 import java.util.ArrayList;
 
 public class WordSelectActivity extends AppCompatActivity {
 
-    // TODO
-    //  - set up onclick behavior of list items
-    //  - report current total selected words
-    //  - make confirm button
-    //  - connect activity to game
-
     public static final String GAME_MODE_CODE_SELECT_WORD = "com.lima.sudoku_vocab.WordSelectActivity - Mode";
     public static final String DIFFICULTY_CODE_SELECT_WORD = "com.lima.sudoku_vocab.WordSelectActivity - Difficulty";
 
-    private String[] nativeWords;
-    private String[] foreignWords;
-    private String[] wordPairs;
+    private String[] wordPairStrings;
+    private ArrayList<WordPair> pairList;
 
     private ListView wordList;
+    private TextView selectedWordCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,19 @@ public class WordSelectActivity extends AppCompatActivity {
 
     private void configureViews() {
         wordList = findViewById(R.id.word_select_list);
+        Button confirmBtn = findViewById(R.id.confirmBtn);
+
+        selectedWordCount = findViewById(R.id.selected_word_count);
+        selectedWordCount.setText(
+                getResources().getString(
+                        R.string.selected_word_count,
+                        wordList.getCheckedItemCount(),
+                        9)
+        );
+
+        confirmBtn.setOnClickListener(
+                v -> onConfirmButtonClick()
+        );
     }
 
     private void getDataFromDB() {
@@ -50,7 +64,7 @@ public class WordSelectActivity extends AppCompatActivity {
         wordDB.open();
         Cursor cursor = wordDB.getAllRows();
 
-        ArrayList<WordPair> pairList = new ArrayList<WordPair>();
+        pairList = new ArrayList<>();
 
         if (cursor.moveToFirst()) {
             do {
@@ -65,20 +79,53 @@ public class WordSelectActivity extends AppCompatActivity {
         cursor.close();
         wordDB.close();
 
-        nativeWords = new String[pairList.size()];
-        foreignWords = new String[pairList.size()];
-        wordPairs = new String[pairList.size()];
+        wordPairStrings = new String[pairList.size()];
 
         for (int i = 0; i < pairList.size(); i++) {
-            nativeWords[i] = pairList.get(i).getForeignWord();
-            foreignWords[i] = pairList.get(i).getNativeWord();
-            wordPairs[i] = nativeWords[i] + " - " + foreignWords[i];
+            wordPairStrings[i] = pairList.get(i).getNativeWord() + " - " + pairList.get(i).getForeignWord();
         }
     }
 
     private void populateWordList() {
         wordList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        wordList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, wordPairs));
+        wordList.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_multiple_choice, wordPairStrings));
+        wordList.setOnItemClickListener((parent, viewCLicked, screenPos, id) -> selectedWordCount.setText(
+                getResources().getString(
+                        R.string.selected_word_count,
+                        wordList.getCheckedItemCount(),
+                        9)
+        ));
+    }
+
+    private void onConfirmButtonClick() {
+        int selectedCount = wordList.getCheckedItemCount();
+        if (selectedCount != 9) {
+            Toast.makeText(this, "Invalid number of items selected", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String[] nativeWords = new String[selectedCount];
+        String[] foreignWords = new String[selectedCount];
+
+        SparseBooleanArray booleanArray = wordList.getCheckedItemPositions();
+
+        for (int i = 0, j = 0; i < booleanArray.size(); i++) {
+            if (booleanArray.valueAt(i)) {
+                nativeWords[j] = pairList.get(i).getNativeWord();
+                foreignWords[j] = pairList.get(i).getForeignWord();
+                j++;
+            }
+        }
+
+        Intent originalIntent = getIntent();
+
+        int mode = originalIntent.getIntExtra(GAME_MODE_CODE_SELECT_WORD, SudokuGameActivity.CLASSIC_MODE);
+        float difficulty = originalIntent.getFloatExtra(DIFFICULTY_CODE_SELECT_WORD, VocabSudokuBoard.DIFFICULTY_EASY);
+
+        Intent newIntent = SudokuGameActivity.makeIntent(this, mode, difficulty, nativeWords, foreignWords);
+        startActivity(newIntent);
+
+        finish();
     }
 
     public static Intent makeIntent(Context context, int mode, float difficulty) {
