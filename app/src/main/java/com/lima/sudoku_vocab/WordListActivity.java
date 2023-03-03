@@ -46,8 +46,8 @@ public class WordListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_word_list);
 
         openDB();
-        populateListViewFromDB();
         configureViews();
+        populateListViewFromDB();
     }
 
     @Override
@@ -247,8 +247,7 @@ public class WordListActivity extends AppCompatActivity {
                 );
 
         // Set the adapter for the list view
-        ListView myList = findViewById(R.id.word_list_view);
-        myList.setAdapter(myCursorAdapter);
+        wordList.setAdapter(myCursorAdapter);
     }
 
     private void closeKeyboard()

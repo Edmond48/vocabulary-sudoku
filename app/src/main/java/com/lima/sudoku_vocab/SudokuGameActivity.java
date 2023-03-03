@@ -32,6 +32,9 @@ public class SudokuGameActivity extends AppCompatActivity {
     // codes to extract Extras from Intent used to launch the Activity
     public static final String GAME_MODE_CODE_IN_GAME = "com.lima.sudoku_vocab.SudokuGameActivity - Game mode";
     public static final String DIFFICULTY_CODE_IN_GAME = "com.lima.sudoku_vocab.SudokuGameActivity - Difficulty";
+    public static final String NATIVE_WORDS_CODE_IN_GAME = "com.lima.sudoku_vocab.SudokuGameActivity - Native Words";
+    public static final String FOREIGN_WORDS_CODE_IN_GAME = "com.lima.sudoku_vocab.SudokuGameActivity - Foreign Words";
+
 
     // colors for UI control
     private int PRIMARY_CELL_COLOR;
@@ -95,7 +98,12 @@ public class SudokuGameActivity extends AppCompatActivity {
         this.gameMode = intent.getIntExtra(GAME_MODE_CODE_IN_GAME, CLASSIC_MODE);
 
         // default difficulty is easy
-        this.board = new VocabSudokuBoard(intent.getFloatExtra(DIFFICULTY_CODE_IN_GAME, VocabSudokuBoard.DIFFICULTY_EASY));
+        this.board = new VocabSudokuBoard(
+                intent.getFloatExtra(DIFFICULTY_CODE_IN_GAME, VocabSudokuBoard.DIFFICULTY_EASY),
+                VocabSudokuBoard.DEFAULT_DIMENSION,
+                intent.getStringArrayExtra(NATIVE_WORDS_CODE_IN_GAME),
+                intent.getStringArrayExtra(FOREIGN_WORDS_CODE_IN_GAME)
+                );
 
         this.boardSide = board.getDimension();
 
@@ -435,10 +443,12 @@ public class SudokuGameActivity extends AppCompatActivity {
         return gameMode == CLASSIC_MODE ? pair.getNativeWord() : pair.getForeignWord();
     }
 
-    public static Intent makeIntent(Context context, int mode, float difficulty) {
+    public static Intent makeIntent(Context context, int mode, float difficulty, String[] nativeWords, String[] foreignWords) {
         Intent intent = new Intent(context, SudokuGameActivity.class);
         intent.putExtra(GAME_MODE_CODE_IN_GAME, mode);
         intent.putExtra(DIFFICULTY_CODE_IN_GAME, difficulty);
+        intent.putExtra(NATIVE_WORDS_CODE_IN_GAME, nativeWords);
+        intent.putExtra(FOREIGN_WORDS_CODE_IN_GAME, foreignWords);
         return intent;
     }
 }
