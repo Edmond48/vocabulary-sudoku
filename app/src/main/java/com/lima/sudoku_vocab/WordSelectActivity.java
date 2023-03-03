@@ -7,12 +7,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +19,9 @@ import com.lima.model.WordPair;
 import java.util.ArrayList;
 
 public class WordSelectActivity extends AppCompatActivity {
+
+    // TODO fix hard-coded value 9 to the correct board dimension
+    //  after implementing different board sizes
 
     public static final String GAME_MODE_CODE_SELECT_WORD = "com.lima.sudoku_vocab.WordSelectActivity - Mode";
     public static final String DIFFICULTY_CODE_SELECT_WORD = "com.lima.sudoku_vocab.WordSelectActivity - Difficulty";
@@ -109,8 +109,8 @@ public class WordSelectActivity extends AppCompatActivity {
 
         SparseBooleanArray booleanArray = wordList.getCheckedItemPositions();
 
-        for (int i = 0, j = 0; i < booleanArray.size(); i++) {
-            if (booleanArray.valueAt(i)) {
+        for (int i = 0, j = 0; i < pairList.size(); i++) {
+            if (booleanArray.get(i)) {
                 nativeWords[j] = pairList.get(i).getNativeWord();
                 foreignWords[j] = pairList.get(i).getForeignWord();
                 j++;

@@ -11,23 +11,23 @@ public class VocabSudokuBoard {
     public static final int EMPTY_WORD = -1;
 
     // Default board dimension and sub-grid
-    private static final int DEFAULT_DIMENSION = 9;
+    public static final int DEFAULT_DIMENSION = 9;
     private static final int DEFAULT_SUBGRID_HEIGHT = 3;
     private static final int DEFAULT_SUBGRID_WIDTH = 3;
 
     // TODO fix default value when menu is ready
     // private member variables for board dimension and subgrid
-    private int dimension = DEFAULT_DIMENSION;
+    private final int dimension;
 
     private int gridWidth = DEFAULT_SUBGRID_WIDTH;
     private int gridHeight = DEFAULT_SUBGRID_HEIGHT;
 
     // board containing values 0 - (dimension - 1) which encodes the wordPairs used
     // special value: -1 means empty cell
-    private int[][] board;
+    private final int[][] board;
 
     // keeps track of which cell is pre-filled, users cannot overwrite such cells
-    private boolean[][] isFixed;
+    private final boolean[][] isFixed;
 
     // list of wordPairs
     // use the numbers in board[][] correspond with the index
@@ -36,7 +36,9 @@ public class VocabSudokuBoard {
     // TODO change to parameterized constructor for difficulty mode
     // default constructor
     // Creates a 9x9 board and fill 45% of the cells (easy mode)
-    public VocabSudokuBoard(float difficulty) {
+    public VocabSudokuBoard(float difficulty, int dimension, String[] nativeWords, String[] foreignWords) {
+        this.dimension = dimension;
+
         this.board = new int[dimension][dimension];
         this.isFixed = new boolean[dimension][dimension];
 
@@ -47,7 +49,7 @@ public class VocabSudokuBoard {
             }
         }
 
-        fillWordList();
+        fillWordList(nativeWords, foreignWords);
 
         generateBoard(difficulty);
     }
@@ -66,8 +68,8 @@ public class VocabSudokuBoard {
             }
         }
 
-        // TODO fix hardcoded values, see function definition
-        fillWordList();
+        // word list will have generic words
+        fillWordList(null, null);
     }
 
     // get the integer representing the word pair at the given row and column index
@@ -134,8 +136,8 @@ public class VocabSudokuBoard {
             }
             shuffle(wordIndex);
 
-            for (int j = 0; j < wordIndex.length; j++) {
-                board[row][col] = wordIndex[j];
+            for (int index : wordIndex) {
+                board[row][col] = index;
                 if (validateCell(row, col)) {
                     isFixed[row][col] = true;
                     break;
@@ -207,20 +209,21 @@ public class VocabSudokuBoard {
         }
     }
 
-    // temporary method to fill in word list with hard-coded values
-    // used while the app's word list feature has not been developed
-    // TODO remove this when word list feature is implemented, should not test
-    private void fillWordList(){
+    // combine two string arrays into a wordPair array
+    // and use it as this object's word pair
+    private void fillWordList(String[] nativeWords, String[] foreignWords){
         wordList = new WordPair[dimension];
-        wordList[0] = new WordPair("apple", "tao");
-        wordList[1] = new WordPair("bee", "ong");
-        wordList[2] = new WordPair("car", "xe");
-        wordList[3] = new WordPair("decide", "quyet dinh");
-        wordList[4] = new WordPair("extra", "them");
-        wordList[5] = new WordPair("find", "tim");
-        wordList[6] = new WordPair("guide", "huong dan");
-        wordList[7] = new WordPair("home", "nha");
-        wordList[8] = new WordPair("interesting", "thu vi");
+
+        if (nativeWords == null || foreignWords == null ||
+                nativeWords.length != dimension || foreignWords.length != dimension) {
+            for (int i = 0; i < dimension; i++) {
+                wordList[i] = new WordPair("native" + i, "foreign" + i);
+            }
+            return;
+        }
+
+        for (int i = 0; i < dimension; i++)
+            wordList[i] = new WordPair(nativeWords[i], foreignWords[i]);
     }
 
     // main function for testing

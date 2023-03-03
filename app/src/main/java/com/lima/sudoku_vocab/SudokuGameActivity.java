@@ -98,7 +98,12 @@ public class SudokuGameActivity extends AppCompatActivity {
         this.gameMode = intent.getIntExtra(GAME_MODE_CODE_IN_GAME, CLASSIC_MODE);
 
         // default difficulty is easy
-        this.board = new VocabSudokuBoard(intent.getFloatExtra(DIFFICULTY_CODE_IN_GAME, VocabSudokuBoard.DIFFICULTY_EASY));
+        this.board = new VocabSudokuBoard(
+                intent.getFloatExtra(DIFFICULTY_CODE_IN_GAME, VocabSudokuBoard.DIFFICULTY_EASY),
+                VocabSudokuBoard.DEFAULT_DIMENSION,
+                intent.getStringArrayExtra(NATIVE_WORDS_CODE_IN_GAME),
+                intent.getStringArrayExtra(FOREIGN_WORDS_CODE_IN_GAME)
+                );
 
         this.boardSide = board.getDimension();
 
