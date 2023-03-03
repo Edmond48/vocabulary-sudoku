@@ -148,8 +148,7 @@
         app:layout_constraintStart_toEndOf="@+id/removeBtn"
         app:layout_constraintEnd_toStartOf="@+id/end_guideline"
         app:layout_constraintTop_toTopOf="@+id/removeBtn"
-        app:layout_constraintBottom_toBottomOf="@+id/removeBtn"
-        />
+        app:layout_constraintBottom_toBottomOf="@+id/removeBtn" />
 
     <Button
         android:id="@+id/cancelAddBtn"

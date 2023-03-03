@@ -42,7 +42,7 @@ public class DifficultyMenuActivity extends AppCompatActivity {
 
         //Default value is classic mode
         int mode = getIntent().getIntExtra(GAME_MODE_CODE_MENU, SudokuGameActivity.CLASSIC_MODE);
-        Intent intent = SudokuGameActivity.makeIntent(this, mode, difficulty);
+        Intent intent = WordSelectActivity.makeIntent(this, mode, difficulty);
         startActivity(intent);
         finish();
     }
