@@ -12,6 +12,9 @@
         android:theme="@style/Theme.SudokuVocabApp"
         tools:targetApi="31">
         <activity
+            android:name=".SizeMenuActivity"
+            android:exported="false" />
+        <activity
             android:name=".WordSelectActivity"
             android:exported="false" />
         <activity

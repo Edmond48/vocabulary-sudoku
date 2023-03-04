@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SizeMenuActivity">
+
+    <Button
+        android:id="@+id/four_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/menu_button_background"
+        android:text="@string/four_by_four"
+        android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@+id/start_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/end_guideline"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/six_btn"
+        app:layout_constraintVertical_chainStyle="spread"/>
+
+    <Button
+        android:id="@+id/six_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/menu_button_background"
+        android:text="@string/six_by_six"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@+id/end_guideline"
+        app:layout_constraintStart_toEndOf="@+id/start_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/four_btn"
+        app:layout_constraintBottom_toTopOf="@+id/nine_btn"/>
+
+    <Button
+        android:id="@+id/nine_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/menu_button_background"
+        android:text="@string/nine_by_nine"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@+id/end_guideline"
+        app:layout_constraintStart_toEndOf="@+id/start_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/six_btn"
+        app:layout_constraintBottom_toTopOf="@+id/twelve_btn"/>
+
+    <Button
+        android:id="@+id/twelve_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/menu_button_background"
+        android:text="@string/twelve_by_twelve"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@+id/end_guideline"
+        app:layout_constraintStart_toEndOf="@+id/start_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/nine_btn"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/start_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/end_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.8" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
