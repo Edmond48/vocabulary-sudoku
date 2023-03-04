@@ -15,12 +15,24 @@ public class VocabSudokuBoard {
     private static final int DEFAULT_SUBGRID_HEIGHT = 3;
     private static final int DEFAULT_SUBGRID_WIDTH = 3;
 
+    public static final int FOUR_DIMENSION = 4;
+    private static final int FOUR_SUBGRID_HEIGHT = 2;
+    private static final int FOUR_SUBGRID_WIDTH = 2;
+
+    public static final int SIX_DIMENSION = 6;
+    private static final int SIX_SUBGRID_HEIGHT = 2;
+    private static final int SIX_SUBGRID_WIDTH = 3;
+
+    public static final int TWELVE_DIMENSION = 12;
+    private static final int TWELVE_SUBGRID_HEIGHT = 3;
+    private static final int TWELVE_SUBGRID_WIDTH = 4;
+
     // TODO fix default value when menu is ready
     // private member variables for board dimension and subgrid
     private final int dimension;
 
-    private int gridWidth = DEFAULT_SUBGRID_WIDTH;
-    private int gridHeight = DEFAULT_SUBGRID_HEIGHT;
+    private final int gridWidth;
+    private final int gridHeight;
 
     // board containing values 0 - (dimension - 1) which encodes the wordPairs used
     // special value: -1 means empty cell
@@ -38,6 +50,26 @@ public class VocabSudokuBoard {
     // Creates a 9x9 board and fill 45% of the cells (easy mode)
     public VocabSudokuBoard(float difficulty, int dimension, String[] nativeWords, String[] foreignWords) {
         this.dimension = dimension;
+
+        switch (this.dimension) {
+            case FOUR_DIMENSION:
+                gridHeight = FOUR_SUBGRID_HEIGHT;
+                gridWidth = FOUR_SUBGRID_WIDTH;
+                break;
+            case SIX_DIMENSION:
+                gridHeight = SIX_SUBGRID_HEIGHT;
+                gridWidth = SIX_SUBGRID_WIDTH;
+                break;
+            case TWELVE_DIMENSION:
+                gridHeight = TWELVE_SUBGRID_HEIGHT;
+                gridWidth = TWELVE_SUBGRID_WIDTH;
+                break;
+            case DEFAULT_DIMENSION:
+            default:
+                gridHeight = DEFAULT_SUBGRID_HEIGHT;
+                gridWidth = DEFAULT_SUBGRID_WIDTH;
+                break;
+        }
 
         this.board = new int[dimension][dimension];
         this.isFixed = new boolean[dimension][dimension];
@@ -58,6 +90,8 @@ public class VocabSudokuBoard {
     // assumes that the matrix is square
     VocabSudokuBoard(int[][] board) {
         this.dimension = board.length;
+        this.gridWidth = dimension;
+        this.gridHeight = dimension;
         this.board = new int[dimension][dimension];
         this.isFixed = new boolean[dimension][dimension];
 

@@ -20,12 +20,11 @@ import java.util.ArrayList;
 
 public class WordSelectActivity extends AppCompatActivity {
 
-    // TODO fix hard-coded value 9 to the correct board dimension
-    //  after implementing different board sizes
-
-    public static final String GAME_MODE_CODE_SELECT_WORD = "com.lima.sudoku_vocab.WordSelectActivity - Mode";
+    public static final String GAME_MODE_CODE_SELECT_WORD = "com.lima.sudoku_vocab.WordSelectActivity - Game Mode";
     public static final String DIFFICULTY_CODE_SELECT_WORD = "com.lima.sudoku_vocab.WordSelectActivity - Difficulty";
+    public static final String SIZE_CODE_SELECT_WORD = "com.lima.sudoku_vocab.WordSelectActivity - Size";
 
+    private int boardDimension;
     private String[] wordPairStrings;
     private ArrayList<WordPair> pairList;
 
@@ -43,6 +42,8 @@ public class WordSelectActivity extends AppCompatActivity {
     }
 
     private void configureViews() {
+        boardDimension = getIntent().getIntExtra(SIZE_CODE_SELECT_WORD, VocabSudokuBoard.DEFAULT_DIMENSION);
+
         wordList = findViewById(R.id.word_select_list);
         Button confirmBtn = findViewById(R.id.confirmBtn);
 
@@ -51,7 +52,7 @@ public class WordSelectActivity extends AppCompatActivity {
                 getResources().getString(
                         R.string.selected_word_count,
                         wordList.getCheckedItemCount(),
-                        9)
+                        boardDimension)
         );
 
         confirmBtn.setOnClickListener(
@@ -93,13 +94,13 @@ public class WordSelectActivity extends AppCompatActivity {
                 getResources().getString(
                         R.string.selected_word_count,
                         wordList.getCheckedItemCount(),
-                        9)
+                        boardDimension)
         ));
     }
 
     private void onConfirmButtonClick() {
         int selectedCount = wordList.getCheckedItemCount();
-        if (selectedCount != 9) {
+        if (selectedCount != boardDimension) {
             Toast.makeText(this, "Invalid number of items selected", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -122,16 +123,17 @@ public class WordSelectActivity extends AppCompatActivity {
         int mode = originalIntent.getIntExtra(GAME_MODE_CODE_SELECT_WORD, SudokuGameActivity.CLASSIC_MODE);
         float difficulty = originalIntent.getFloatExtra(DIFFICULTY_CODE_SELECT_WORD, VocabSudokuBoard.DIFFICULTY_EASY);
 
-        Intent newIntent = SudokuGameActivity.makeIntent(this, mode, difficulty, nativeWords, foreignWords);
+        Intent newIntent = SudokuGameActivity.makeIntent(this, mode, difficulty, boardDimension, nativeWords, foreignWords);
         startActivity(newIntent);
 
         finish();
     }
 
-    public static Intent makeIntent(Context context, int mode, float difficulty) {
+    public static Intent makeIntent(Context context, int mode, float difficulty, int size) {
         Intent intent = new Intent(context, WordSelectActivity.class);
         intent.putExtra(GAME_MODE_CODE_SELECT_WORD, mode);
         intent.putExtra(DIFFICULTY_CODE_SELECT_WORD, difficulty);
+        intent.putExtra(SIZE_CODE_SELECT_WORD, size);
         return intent;
     }
 }

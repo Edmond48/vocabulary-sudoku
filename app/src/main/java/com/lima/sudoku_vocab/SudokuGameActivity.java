@@ -20,9 +20,6 @@ import com.lima.model.WordPair;
 
 public class SudokuGameActivity extends AppCompatActivity {
 
-    // number of word buttons per row
-    public static final double WORDS_PER_ROW = 3.0;
-
     // constant for game modes
     // in controller because model classes should not need to know which mode is being used
     // the only effect of modes is which word is shown in UI, does not change game logic
@@ -32,16 +29,16 @@ public class SudokuGameActivity extends AppCompatActivity {
     // codes to extract Extras from Intent used to launch the Activity
     public static final String GAME_MODE_CODE_IN_GAME = "com.lima.sudoku_vocab.SudokuGameActivity - Game mode";
     public static final String DIFFICULTY_CODE_IN_GAME = "com.lima.sudoku_vocab.SudokuGameActivity - Difficulty";
+    public static final String SIZE_CODE_IN_GAME = "com.lima.sudoku_vocab.SudokuGameActivity - Size";
     public static final String NATIVE_WORDS_CODE_IN_GAME = "com.lima.sudoku_vocab.SudokuGameActivity - Native Words";
     public static final String FOREIGN_WORDS_CODE_IN_GAME = "com.lima.sudoku_vocab.SudokuGameActivity - Foreign Words";
-
 
     // colors for UI control
     private int PRIMARY_CELL_COLOR;
     private int SECONDARY_CELL_COLOR;
     private int FIXED_CELL_COLOR;
     private int HIGHLIGHT_COLOR;
-    
+
     // board object
     VocabSudokuBoard board;
 
@@ -53,6 +50,9 @@ public class SudokuGameActivity extends AppCompatActivity {
 
     // 2D array for all TextView cells
     private TextView[][] cells;
+
+    // number of word buttons per row
+    private double buttonsPerRow;
 
     // 1D array for TextView buttons
     private TextView[] wordButtons;
@@ -100,12 +100,24 @@ public class SudokuGameActivity extends AppCompatActivity {
         // default difficulty is easy
         this.board = new VocabSudokuBoard(
                 intent.getFloatExtra(DIFFICULTY_CODE_IN_GAME, VocabSudokuBoard.DIFFICULTY_EASY),
-                VocabSudokuBoard.DEFAULT_DIMENSION,
+                intent.getIntExtra(SIZE_CODE_IN_GAME, VocabSudokuBoard.DEFAULT_DIMENSION),
                 intent.getStringArrayExtra(NATIVE_WORDS_CODE_IN_GAME),
                 intent.getStringArrayExtra(FOREIGN_WORDS_CODE_IN_GAME)
                 );
 
         this.boardSide = board.getDimension();
+
+        switch (boardSide) {
+            case VocabSudokuBoard.FOUR_DIMENSION:
+                buttonsPerRow = 2;
+                break;
+            case VocabSudokuBoard.TWELVE_DIMENSION:
+                buttonsPerRow = 4;
+                break;
+            default:
+                buttonsPerRow = 3;
+                break;
+        }
 
         this.selectedActionButtonIndex = boardSide;
 
@@ -147,12 +159,19 @@ public class SudokuGameActivity extends AppCompatActivity {
                         1.0f
                 );
 
-                // hacky solution to create border around sub-grids
-                // TODO generalize the sub-grid display
-                int bigMarginValue = 10;
+                // set bigger margin to make the sub-grids more visible
+                // solution is generalized for all board sizes
+                int bigMarginValue = 5;
                 int smallMarginValue = 2;
-                int bottomMargin = i == 2 || i == 5 ? bigMarginValue : smallMarginValue;
-                int rightMargin = j == 2 || j == 5 ? bigMarginValue : smallMarginValue;
+                int bottomMargin =
+                        (i + 1) % board.getGridHeight() == 0 && i != boardSide ?
+                                bigMarginValue :
+                                smallMarginValue;
+                int rightMargin =
+                        (j + 1) % board.getGridWidth() == 0 && j != boardSide ?
+                                bigMarginValue :
+                                smallMarginValue;
+
                 params.setMargins(smallMarginValue, smallMarginValue, rightMargin, bottomMargin);
                 cell.setLayoutParams(params);
 
@@ -181,7 +200,7 @@ public class SudokuGameActivity extends AppCompatActivity {
     private void populateWordButtons() {
         TableLayout wordButtons = findViewById(R.id.word_buttons);
 
-        for (int i = 0; i < Math.ceil(boardSide / WORDS_PER_ROW); i++) {
+        for (int i = 0; i < Math.ceil(boardSide / buttonsPerRow); i++) {
             TableRow row = new TableRow(this);
 
             row.setLayoutParams(new TableLayout.LayoutParams(
@@ -191,7 +210,7 @@ public class SudokuGameActivity extends AppCompatActivity {
             ));
             wordButtons.addView(row);
 
-            for (int j = 0; j < WORDS_PER_ROW && j + i * WORDS_PER_ROW < boardSide; j++) {
+            for (int j = 0; j < buttonsPerRow && j + i * buttonsPerRow < boardSide; j++) {
 
                 TextView wordBtn = new TextView(this);
 
@@ -208,7 +227,7 @@ public class SudokuGameActivity extends AppCompatActivity {
                 wordBtn.setGravity(Gravity.CENTER);
                 wordBtn.setBackgroundResource(R.drawable.rounded_corner_blue);
 
-                final int wordIndex = j + i * (int) WORDS_PER_ROW;
+                final int wordIndex = j + i * (int) buttonsPerRow;
 
                 wordBtn.setOnClickListener(
                         view -> onActionButtonClick(wordIndex)
@@ -380,14 +399,14 @@ public class SudokuGameActivity extends AppCompatActivity {
                 wordBtn.setMinimumHeight(wordBtn.getHeight());
 
                 // set the text
-                wordBtn.setText(getPrimaryWord(board.getWord(colIndex + rowIndex * (int) WORDS_PER_ROW)));
+                wordBtn.setText(getPrimaryWord(board.getWord(colIndex + rowIndex * (int) buttonsPerRow)));
             }
         });
     }
 
     private boolean isInLightSubgrid(int row, int col) {
-        int subgridRow = row / board.getGridWidth();
-        int subgridColumn= col / board.getGridHeight();
+        int subgridRow = row / board.getGridHeight();
+        int subgridColumn = col / board.getGridWidth();
         return (subgridRow + subgridColumn) % 2 == 1;
     }
 
@@ -443,10 +462,11 @@ public class SudokuGameActivity extends AppCompatActivity {
         return gameMode == CLASSIC_MODE ? pair.getNativeWord() : pair.getForeignWord();
     }
 
-    public static Intent makeIntent(Context context, int mode, float difficulty, String[] nativeWords, String[] foreignWords) {
+    public static Intent makeIntent(Context context, int mode, float difficulty, int size, String[] nativeWords, String[] foreignWords) {
         Intent intent = new Intent(context, SudokuGameActivity.class);
         intent.putExtra(GAME_MODE_CODE_IN_GAME, mode);
         intent.putExtra(DIFFICULTY_CODE_IN_GAME, difficulty);
+        intent.putExtra(SIZE_CODE_IN_GAME, size);
         intent.putExtra(NATIVE_WORDS_CODE_IN_GAME, nativeWords);
         intent.putExtra(FOREIGN_WORDS_CODE_IN_GAME, foreignWords);
         return intent;

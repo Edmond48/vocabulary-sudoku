@@ -20,4 +20,8 @@
     <string name="remove_info_pair">\"%1$s - %2$s\" is selected for removal"</string>
     <string name="select_word_pairs">Select your word pairs</string>
     <string name="selected_word_count">%1$d/%2$d selected</string>
+    <string name="four_by_four">4 x 4</string>
+    <string name="six_by_six">6 x 6</string>
+    <string name="nine_by_nine">9 x 9</string>
+    <string name="twelve_by_twelve">12 x 12</string>
 </resources>
