@@ -139,23 +139,24 @@ public class DBAdapter {
         return c;
     }
 
-    // Change an existing row to be equal to new data.
-    public boolean updateRow(long rowId, String name, int studentNum, String favColour) {
+    // not needed for now
+/*    // Change an existing row to be equal to new data.
+    public boolean updateRow(long rowId, String nativeWord, String foreignWord) {
         String where = KEY_ROWID + "=" + rowId;
 
-        /*
+        *//*
          * CHANGE 4:
-         */
+         *//*
         // TODO: Update data in the row with new fields.
         // TODO: Also change the function's arguments to be what you need!
         // Create row's data:
         ContentValues newValues = new ContentValues();
-        newValues.put(KEY_NATIVE_WORD, name);
-        newValues.put(KEY_FOREIGN_WORD, studentNum);
+        newValues.put(KEY_NATIVE_WORD, nativeWord);
+        newValues.put(KEY_FOREIGN_WORD, foreignWord);
 
         // Insert it into the database.
         return db.update(DATABASE_TABLE, newValues, where, null) != 0;
-    }
+    }*/
 
 
 
@@ -176,6 +177,18 @@ public class DBAdapter {
         @Override
         public void onCreate(SQLiteDatabase _db) {
             _db.execSQL(DATABASE_CREATE_SQL);
+
+            // insert default words, only happens on database creation(?)
+            String[] englishWords =
+                    {"apple", "baby", "creature", "duck", "egg", "fog", "ground", "hope", "ink", "joke", "king", "love"};
+            String[] klingonWords =
+                    {"'epIl naHmey", "ghu", "chenmoH", "chech", "Qlm", "tlhimqaH", "yav", "tul", "ghItlh", "qID", "Ta'", "parmaq"};
+            for (int i = 0; i < 12; i++) {
+                ContentValues initialValues = new ContentValues();
+                initialValues.put(KEY_NATIVE_WORD, englishWords[i]);
+                initialValues.put(KEY_FOREIGN_WORD, klingonWords[i]);
+                _db.insert(DATABASE_TABLE, null, initialValues);
+            }
         }
 
         @Override
