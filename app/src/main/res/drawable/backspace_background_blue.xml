@@ -20,8 +20,8 @@
     <item
         android:top="10dp"
         android:bottom="10dp"
-        android:left="20dp"
-        android:right="20dp">
+        android:left="15dp"
+        android:right="15dp">
         <vector
             android:autoMirrored="true"
             android:height="24dp"
