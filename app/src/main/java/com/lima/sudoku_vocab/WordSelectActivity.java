@@ -49,10 +49,7 @@ public class WordSelectActivity extends AppCompatActivity {
 
         selectedWordCount = findViewById(R.id.selected_word_count);
         selectedWordCount.setText(
-                getResources().getString(
-                        R.string.selected_word_count,
-                        wordList.getCheckedItemCount(),
-                        boardDimension)
+                getStringForPairCount()
         );
 
         confirmBtn.setOnClickListener(
@@ -91,11 +88,15 @@ public class WordSelectActivity extends AppCompatActivity {
         wordList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         wordList.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_multiple_choice, wordPairStrings));
         wordList.setOnItemClickListener((parent, viewCLicked, screenPos, id) -> selectedWordCount.setText(
-                getResources().getString(
-                        R.string.selected_word_count,
-                        wordList.getCheckedItemCount(),
-                        boardDimension)
+                getStringForPairCount()
         ));
+    }
+
+    private String getStringForPairCount() {
+        return getResources().getString(
+                R.string.selected_word_count,
+                wordList.getCheckedItemCount(),
+                boardDimension);
     }
 
     private void onConfirmButtonClick() {

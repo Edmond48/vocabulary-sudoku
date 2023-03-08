@@ -372,7 +372,7 @@ public class SudokuGameActivity extends AppCompatActivity {
 
                 setCellBackgroundColor(row, col);
 
-                cell.setEllipsize(TextUtils.TruncateAt.END);
+                cell.setEllipsize(TextUtils.TruncateAt.MARQUEE);
                 cell.setMaxLines(1);
             }
         });

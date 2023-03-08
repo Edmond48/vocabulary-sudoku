@@ -4,24 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/dark_green"
     tools:context=".SudokuGameActivity">
 
     <TableLayout
         android:id="@+id/sudoku_table"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:background="@drawable/rounded_corner_white"
         android:padding="3dp"
         android:shrinkColumns="*"
         android:stretchColumns="*"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/wordDisplay"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/wordDisplay"
-        app:layout_constraintVertical_chainStyle="spread"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread"/>
 
     <TextView
         android:id="@+id/wordDisplay"
@@ -29,15 +29,17 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:background="@drawable/rounded_corner_blue"
         android:gravity="center"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/word_buttons"
-        app:layout_constraintEnd_toEndOf="@+id/sudoku_table"
-        app:layout_constraintStart_toStartOf="@+id/sudoku_table"
-        app:layout_constraintTop_toBottomOf="@+id/sudoku_table" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/sudoku_table"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/word_buttons"/>
 
     <TableLayout
         android:id="@+id/word_buttons"
@@ -47,22 +49,21 @@
         android:shrinkColumns="*"
         android:stretchColumns="*"
         app:layout_constraintTop_toBottomOf="@+id/wordDisplay"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/clearButton"
+        app:layout_constraintBottom_toTopOf="@+id/clearButton"
+        app:layout_constraintEnd_toEndOf="@+id/wordDisplay"
         app:layout_constraintStart_toStartOf="@+id/wordDisplay"
-        app:layout_constraintHorizontal_weight="4"/>
+        app:layout_constraintVertical_weight="4" />
 
     <TextView
         android:id="@+id/clearButton"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_width="60dp"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
         android:background="@drawable/backspace_background_blue"
-        app:layout_constraintBottom_toBottomOf="@+id/word_buttons"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/word_buttons"
-        app:layout_constraintTop_toTopOf="@+id/word_buttons"
-        app:layout_constraintHorizontal_weight="1"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/word_buttons"
+        app:layout_constraintStart_toStartOf="@+id/word_buttons"
+        app:layout_constraintTop_toBottomOf="@+id/word_buttons"
+        app:layout_constraintVertical_weight="1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

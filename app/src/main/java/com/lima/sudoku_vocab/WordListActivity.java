@@ -137,7 +137,7 @@ public class WordListActivity extends AppCompatActivity {
         wordList.setOnItemClickListener((parent, viewClicked, position, idDB) -> {
 
             selectedRemoveItemId = idDB;
-            Log.i(TAG, "Clicked on item with database ID " + idDB);
+            //Log.i(TAG, "Clicked on item with database ID " + idDB);
             updateRemoveInfoField(idDB);
         });
     }
@@ -163,6 +163,10 @@ public class WordListActivity extends AppCompatActivity {
         }
         wordDB.insertRow(nativeWord, foreignWord);
         populateListViewFromDB();
+        Toast.makeText(
+                this,
+                "Added " + "\"" + nativeWord + " - " + foreignWord + "\"",
+                Toast.LENGTH_SHORT).show();
 
         resetFromAddState();
     }
@@ -177,6 +181,7 @@ public class WordListActivity extends AppCompatActivity {
             return;
         }
         wordDB.deleteRow(selectedRemoveItemId);
+        Toast.makeText(this, "Word pair removed", Toast.LENGTH_SHORT).show();
         populateListViewFromDB();
 
         resetFromRemoveState();

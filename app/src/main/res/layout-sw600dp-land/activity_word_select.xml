@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WordSelectActivity">
+
+    <TextView
+        android:id="@+id/word_select_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corner_blue"
+        android:gravity="center"
+        android:text="@string/select_word_pairs"
+        android:textAlignment="center"
+        android:padding="10dp"
+        android:layout_margin="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/word_select_list"
+        app:layout_constraintEnd_toStartOf="@+id/middle_horizontal_guideline"
+        app:layout_constraintStart_toEndOf="@+id/start_guideline"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ListView
+        android:id="@+id/word_select_list"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/rounded_corner_purple"
+        app:layout_constraintStart_toStartOf="@+id/word_select_text"
+        app:layout_constraintEnd_toEndOf="@+id/word_select_text"
+        app:layout_constraintTop_toBottomOf="@+id/word_select_text"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/selected_word_count"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:background="@drawable/rounded_corner_blue"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/confirmBtn"
+        app:layout_constraintStart_toEndOf="@+id/middle_horizontal_guideline"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <Button
+        android:id="@+id/confirmBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:padding="10dp"
+        android:text="@string/confirm"
+        app:layout_constraintStart_toStartOf="@+id/selected_word_count"
+        app:layout_constraintEnd_toEndOf="@+id/selected_word_count"
+        app:layout_constraintTop_toBottomOf="@+id/selected_word_count"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/middle_horizontal_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.7" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/start_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.2" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
