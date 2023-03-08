@@ -89,7 +89,7 @@ public class VocabSudokuBoard {
 
     // constructor to build a board from a matrix of integers
     // assumes that the matrix is square
-    VocabSudokuBoard(int[][] board) {
+    public VocabSudokuBoard(int[][] board) {
         this.dimension = board.length;
         this.gridWidth = dimension;
         this.gridHeight = dimension;
