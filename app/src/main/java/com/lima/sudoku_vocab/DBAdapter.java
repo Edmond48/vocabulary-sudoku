@@ -1,3 +1,11 @@
+/*
+ * DBAdapter.java
+ *
+ * Adapted from Dr. Brian Fraser's demo
+ *
+ * Contains deprecated functions usage
+ *
+*/
 package com.lima.sudoku_vocab;
 
 import android.content.ContentValues;
@@ -178,7 +186,7 @@ public class DBAdapter {
         public void onCreate(SQLiteDatabase _db) {
             _db.execSQL(DATABASE_CREATE_SQL);
 
-            // insert default words, only happens on database creation(?)
+            // insert default words, only happens on database creation
             String[] englishWords =
                     {"apple", "baby", "creature", "duck", "egg", "fog", "ground", "hope", "ink", "joke", "king", "love"};
             String[] klingonWords =

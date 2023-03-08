@@ -11,6 +11,7 @@ import com.lima.model.VocabSudokuBoard;
 
 public class DifficultyMenuActivity extends AppCompatActivity {
 
+    // Code to get Extras from Intent
     public static final String GAME_MODE_CODE_MENU = "com.lima.sudoku_vocab.DifficultyMenuActivity - Game Mode";
 
     @Override
@@ -21,6 +22,7 @@ public class DifficultyMenuActivity extends AppCompatActivity {
         setUpDifficultyButtons();
     }
 
+    // Set up onClick behavior for buttons
     private void setUpDifficultyButtons() {
         Button easyBtn = findViewById(R.id.easy_btn);
         easyBtn.setOnClickListener(
@@ -38,6 +40,7 @@ public class DifficultyMenuActivity extends AppCompatActivity {
         );
     }
 
+    // Launch the next activity with Extra for difficulty
     private void onDifficultyButtonClick(float difficulty) {
 
         //Default value is classic mode
@@ -47,6 +50,7 @@ public class DifficultyMenuActivity extends AppCompatActivity {
         finish();
     }
 
+    // make an Intent to launch this activity
     public static Intent makeIntent(Context context, int gameMode) {
         Intent intent = new Intent(context, DifficultyMenuActivity.class);
         intent.putExtra(GAME_MODE_CODE_MENU, gameMode);

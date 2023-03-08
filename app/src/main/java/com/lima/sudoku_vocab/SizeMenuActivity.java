@@ -55,6 +55,7 @@ public class SizeMenuActivity extends AppCompatActivity {
         finish();
     }
 
+    // make an Intent to launch this activity
     public static Intent makeIntent(Context context, int mode, float difficulty) {
         Intent intent = new Intent(context, SizeMenuActivity.class);
         intent.putExtra(GAME_MODE_CODE_SIZE_MENU, mode);

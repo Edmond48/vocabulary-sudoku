@@ -20,7 +20,7 @@ import com.lima.model.WordPair;
 
 public class SudokuGameActivity extends AppCompatActivity {
 
-    // constant for game modes
+    // constants for game modes
     // in controller because model classes should not need to know which mode is being used
     // the only effect of modes is which word is shown in UI, does not change game logic
     public static final int CLASSIC_MODE = 0;
@@ -48,10 +48,10 @@ public class SudokuGameActivity extends AppCompatActivity {
     // board dimension
     private int boardSide;
 
-    // 2D array for all TextView cells
+    // 2D array for all TextView cells in the board
     private TextView[][] cells;
 
-    // number of word buttons per row
+    // number of word buttons per row of display
     private double buttonsPerRow;
 
     // 1D array for TextView buttons
@@ -107,6 +107,7 @@ public class SudokuGameActivity extends AppCompatActivity {
 
         this.boardSide = board.getDimension();
 
+        // set up dimension for word buttons table
         switch (boardSide) {
             case VocabSudokuBoard.FOUR_DIMENSION:
                 buttonsPerRow = 2;
@@ -131,13 +132,13 @@ public class SudokuGameActivity extends AppCompatActivity {
         SECONDARY_CELL_COLOR = ContextCompat.getColor(this, R.color.light_blue);
     }
 
-    // TODO When model classes are ready, incorporate them here
     // Create a 9x9 board and populate it with TextView
     private void populateSudokuBoard() {
         TableLayout table = findViewById(R.id.sudoku_table);
 
         for (int i = 0; i < boardSide; i++) {
 
+            // set up UI attributes for the row
             TableRow row = new TableRow(this);
             row.setLayoutParams(new TableLayout.LayoutParams(
                     TableLayout.LayoutParams.MATCH_PARENT,
@@ -146,11 +147,11 @@ public class SudokuGameActivity extends AppCompatActivity {
             ));
 
             table.addView(row);
+
             for (int j = 0; j < boardSide; j++) {
                 final int rowIndex = i;
                 final int colIndex = j;
 
-                // TODO Refactor to a function
                 // Setup cell
                 TextView cell = new TextView(this);
                 TableRow.LayoutParams params = new TableRow.LayoutParams(
@@ -197,6 +198,7 @@ public class SudokuGameActivity extends AppCompatActivity {
         }
     }
 
+    // set up the table containing buttons for entering words
     private void populateWordButtons() {
         TableLayout wordButtons = findViewById(R.id.word_buttons);
 
@@ -242,16 +244,18 @@ public class SudokuGameActivity extends AppCompatActivity {
         }
     }
 
-
+    // assign the UI element to a variable for ease of access
     private void setUpDisplayWordField() {
         this.displayWord = findViewById(R.id.wordDisplay);
     }
 
+    // set up clear button
     private void setUpClearButton() {
         this.clearButton = findViewById(R.id.clearButton);
         clearButton.setOnClickListener(view -> onActionButtonClick(VocabSudokuBoard.EMPTY_WORD));
     }
 
+    // handles click on the Sudoku board's cell
     private void onCellClick(int rowIndex, int colIndex) {
         // If there is an action button already selected
         if (selectedActionButtonIndex < boardSide) {
@@ -297,6 +301,7 @@ public class SudokuGameActivity extends AppCompatActivity {
         }
     }
 
+    // handles clicks on word buttons and the clear button
     private void onActionButtonClick(int wordIndex) {
 
         int rowIndex = selectedCellIndex / boardSide;
@@ -343,6 +348,8 @@ public class SudokuGameActivity extends AppCompatActivity {
         }
     }
 
+    // fill cells with their words after the view is inflated on the screen
+    // Attempts to lock the dimensions of the cells to make them square
     private void setUpCellWhenDrawn(TextView cell, int row, int col) {
         cell.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 
@@ -370,8 +377,10 @@ public class SudokuGameActivity extends AppCompatActivity {
                 cell.setMaxHeight(cell.getHeight());
                 cell.setMinimumHeight(cell.getHeight());
 
+                // set correct background color
                 setCellBackgroundColor(row, col);
 
+                // make the text truncated if it exceeds the cell's size
                 cell.setEllipsize(TextUtils.TruncateAt.MARQUEE);
                 cell.setMaxLines(1);
             }
@@ -404,12 +413,16 @@ public class SudokuGameActivity extends AppCompatActivity {
         });
     }
 
+    // returns true if the sub-grid should be colored light blue
     private boolean isInLightSubgrid(int row, int col) {
         int subgridRow = row / board.getGridHeight();
         int subgridColumn = col / board.getGridWidth();
         return (subgridRow + subgridColumn) % 2 == 1;
     }
 
+    // default cells are blue
+    // selected cells are purple
+    // fixed cells are dark blue
     private void setCellBackgroundColor(int row, int col) {
         if (board.isFixed(row, col))
             cells[row][col].setBackgroundColor(FIXED_CELL_COLOR);
@@ -419,6 +432,7 @@ public class SudokuGameActivity extends AppCompatActivity {
             cells[row][col].setBackgroundColor(PRIMARY_CELL_COLOR);
     }
 
+    // set word buttons and clear button to default background
     private void setActionButtonBackgroundDefault(int actionIndex) {
         if (actionIndex == VocabSudokuBoard.EMPTY_WORD)
             clearButton.setBackgroundResource(R.drawable.backspace_background_blue);
@@ -426,6 +440,7 @@ public class SudokuGameActivity extends AppCompatActivity {
             wordButtons[actionIndex].setBackgroundResource(R.drawable.rounded_corner_blue);
     }
 
+    // set word buttons and clear buttons to selected background
     private void setActionButtonBackGroundSelected(int actionIndex) {
         if (actionIndex == VocabSudokuBoard.EMPTY_WORD)
             clearButton.setBackgroundResource(R.drawable.backspace_background_purple);
@@ -433,6 +448,8 @@ public class SudokuGameActivity extends AppCompatActivity {
             wordButtons[actionIndex].setBackgroundResource(R.drawable.rounded_corner_purple);
     }
 
+    // update the word display field with the word pair from selected cell
+    // or clear the field
     private void updateWordDisplay(int row, int col) {
         StringBuilder builder = new StringBuilder();
 
@@ -462,6 +479,7 @@ public class SudokuGameActivity extends AppCompatActivity {
         return gameMode == CLASSIC_MODE ? pair.getNativeWord() : pair.getForeignWord();
     }
 
+    // make an Intent to launch this activity
     public static Intent makeIntent(Context context, int mode, float difficulty, int size, String[] nativeWords, String[] foreignWords) {
         Intent intent = new Intent(context, SudokuGameActivity.class);
         intent.putExtra(GAME_MODE_CODE_IN_GAME, mode);
