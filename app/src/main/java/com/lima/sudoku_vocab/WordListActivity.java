@@ -113,6 +113,7 @@ public class WordListActivity extends AppCompatActivity {
         );
     }
 
+    // change to Add mode
     private void onAddButtonClick() {
         modeText.setText(R.string.add_mode);
         nativeWordEdit.setVisibility(View.VISIBLE);
@@ -124,6 +125,7 @@ public class WordListActivity extends AppCompatActivity {
         removeBtn.setVisibility(View.GONE);
     }
 
+    // change to Remove mode
     private void onRemoveButtonClick() {
         modeText.setText(R.string.remove_mode);
         removeAllBtn.setVisibility(View.VISIBLE);
@@ -134,14 +136,15 @@ public class WordListActivity extends AppCompatActivity {
         addBtn.setVisibility(View.GONE);
         removeBtn.setVisibility(View.GONE);
 
+        // set up onClick action for list items
         wordList.setOnItemClickListener((parent, viewClicked, position, idDB) -> {
 
             selectedRemoveItemId = idDB;
-            //Log.i(TAG, "Clicked on item with database ID " + idDB);
             updateRemoveInfoField(idDB);
         });
     }
 
+    // update the information field with the pair selected for removal
     private void updateRemoveInfoField(long idDB) {
         Cursor cursor = wordDB.getRow(idDB);
         if (cursor.moveToFirst()) {
@@ -157,46 +160,64 @@ public class WordListActivity extends AppCompatActivity {
     private void onConfirmAddButtonClick() {
         String nativeWord = nativeWordEdit.getText().toString();
         String foreignWord = foreignWordEdit.getText().toString();
+
+        // if user did not enter a proper word pair
         if (nativeWord.isEmpty() || foreignWord.isEmpty()) {
             Toast.makeText(this, "Words cannot be empty", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        // insert in database and update UI
         wordDB.insertRow(nativeWord, foreignWord);
         populateListViewFromDB();
+
+        // Toast to confirm addition of word pair
         Toast.makeText(
                 this,
                 "Added " + "\"" + nativeWord + " - " + foreignWord + "\"",
                 Toast.LENGTH_SHORT).show();
 
+        // reset to original state
         resetFromAddState();
     }
 
+    // reset to original state from Add mode
     private void onCancelAddButtonClick() {
         resetFromAddState();
     }
 
     private void onConfirmRemoveButtonClick() {
+        // if no item was selected
         if (selectedRemoveItemId == -1) {
             Toast.makeText(this, "Please select a word pair to remove", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        // delete item from DB and update UI
         wordDB.deleteRow(selectedRemoveItemId);
-        Toast.makeText(this, "Word pair removed", Toast.LENGTH_SHORT).show();
         populateListViewFromDB();
 
+        // Toast to confirm removal
+        Toast.makeText(this, "Word pair removed", Toast.LENGTH_SHORT).show();
+
+        // reset to original state
         resetFromRemoveState();
     }
 
+    // reset to original state from Remove mode
     private void onCancelRemoveButtonClick() {
         resetFromRemoveState();
     }
 
+    // remove all word pairs
     private void onRemoveAllButtonClick() {
         wordDB.deleteAll();
         populateListViewFromDB();
         resetFromRemoveState();
     }
 
+    // make certain fields visible and others gone
+    // close keyboard
     private void resetFromAddState() {
         modeText.setText(R.string.word_list);
         nativeWordEdit.setText("");
@@ -212,6 +233,9 @@ public class WordListActivity extends AppCompatActivity {
         closeKeyboard();
     }
 
+    // make certain fields visible and others gone
+    // reset selected item from list
+    // disable onClick action in list
     private void resetFromRemoveState() {
         modeText.setText(R.string.word_list);
         confirmRemoveBtn.setVisibility(View.GONE);
@@ -223,11 +247,15 @@ public class WordListActivity extends AppCompatActivity {
         addBtn.setVisibility(View.VISIBLE);
         removeBtn.setVisibility(View.VISIBLE);
 
+        // reset selected item
         selectedRemoveItemId = -1;
+
+        // disable onClick behaviors
         wordList.setOnItemClickListener((parent, viewClicked, position, idDB) -> {
         });
     }
 
+    // display word list from DB to UI
     private void populateListViewFromDB() {
         Cursor cursor = wordDB.getAllRows();
 
@@ -255,6 +283,7 @@ public class WordListActivity extends AppCompatActivity {
         wordList.setAdapter(myCursorAdapter);
     }
 
+    // close keyboard
     private void closeKeyboard()
     {
         // this will give us the view
@@ -274,6 +303,7 @@ public class WordListActivity extends AppCompatActivity {
         }
     }
 
+    // make an Intent to launch this activity
     public static Intent makeIntent(Context context) {
         return new Intent(context, WordListActivity.class);
     }

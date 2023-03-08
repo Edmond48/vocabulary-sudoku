@@ -57,6 +57,9 @@ public class WordSelectActivity extends AppCompatActivity {
         );
     }
 
+    // get word list from DB and build local array
+    // this Activity does not modify the DB itself
+    // so it is easier to extract available word pairs and work with them locally
     private void getDataFromDB() {
         DBAdapter wordDB = new DBAdapter(this);
         wordDB.open();
@@ -84,14 +87,21 @@ public class WordSelectActivity extends AppCompatActivity {
         }
     }
 
+    // display available word pairs to choose from
     private void populateWordList() {
+        // allows multiple items to be checked
         wordList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
+        // use built-in simple adapter
         wordList.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_multiple_choice, wordPairStrings));
+
+        // update current number of selected words
         wordList.setOnItemClickListener((parent, viewCLicked, screenPos, id) -> selectedWordCount.setText(
                 getStringForPairCount()
         ));
     }
 
+    // build string for the number of selected word pairs
     private String getStringForPairCount() {
         return getResources().getString(
                 R.string.selected_word_count,
@@ -101,6 +111,8 @@ public class WordSelectActivity extends AppCompatActivity {
 
     private void onConfirmButtonClick() {
         int selectedCount = wordList.getCheckedItemCount();
+
+        // if user select less or more word pairs than needed
         if (selectedCount != boardDimension) {
             Toast.makeText(this, "Invalid number of items selected", Toast.LENGTH_SHORT).show();
             return;
@@ -111,6 +123,7 @@ public class WordSelectActivity extends AppCompatActivity {
 
         SparseBooleanArray booleanArray = wordList.getCheckedItemPositions();
 
+        // build nativeWords and foreignWords list to pass to game Activity
         for (int i = 0, j = 0; i < pairList.size(); i++) {
             if (booleanArray.get(i)) {
                 nativeWords[j] = pairList.get(i).getNativeWord();
@@ -119,17 +132,21 @@ public class WordSelectActivity extends AppCompatActivity {
             }
         }
 
+        // get info passed to this Activity
         Intent originalIntent = getIntent();
 
         int mode = originalIntent.getIntExtra(GAME_MODE_CODE_SELECT_WORD, SudokuGameActivity.CLASSIC_MODE);
         float difficulty = originalIntent.getFloatExtra(DIFFICULTY_CODE_SELECT_WORD, VocabSudokuBoard.DIFFICULTY_EASY);
 
+        // build Intent and launch game activity
         Intent newIntent = SudokuGameActivity.makeIntent(this, mode, difficulty, boardDimension, nativeWords, foreignWords);
         startActivity(newIntent);
 
+        // destroy this activity
         finish();
     }
 
+    // make an Intent to launch this activity
     public static Intent makeIntent(Context context, int mode, float difficulty, int size) {
         Intent intent = new Intent(context, WordSelectActivity.class);
         intent.putExtra(GAME_MODE_CODE_SELECT_WORD, mode);

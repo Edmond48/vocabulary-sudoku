@@ -9,6 +9,7 @@ public class WordPair {
         this.foreignWord = foreignWord;
     }
 
+    // getters and setters
     public String getNativeWord() {
         return nativeWord;
     }
@@ -25,6 +26,7 @@ public class WordPair {
         this.foreignWord = foreignWord;
     }
 
+    // main for testing
     public static void main(String[] args) {
         WordPair pair = new WordPair("Dragon", "Rồng");
         System.out.println(pair.getNativeWord() + " " + pair.getForeignWord());

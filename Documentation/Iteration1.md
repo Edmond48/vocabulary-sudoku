@@ -18,7 +18,7 @@
 
 **TDD example**: On application start-up, the user is presented with a choice in the menu to edit the word list used by the application.
 
-**Status**: Not Implemented
+**Status**: Implemented
 
 ![Main menu](img/main_menu.jpg "Main menu")
 ![Word list](img/word_list.jpg "Word list")

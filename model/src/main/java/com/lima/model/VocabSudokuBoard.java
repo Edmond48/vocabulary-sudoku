@@ -27,8 +27,7 @@ public class VocabSudokuBoard {
     private static final int TWELVE_SUBGRID_HEIGHT = 3;
     private static final int TWELVE_SUBGRID_WIDTH = 4;
 
-    // TODO fix default value when menu is ready
-    // private member variables for board dimension and subgrid
+    // private member variables for board and sub-grids dimensions
     private final int dimension;
 
     private final int gridWidth;
@@ -45,12 +44,12 @@ public class VocabSudokuBoard {
     // use the numbers in board[][] correspond with the index
     private WordPair[] wordList;
 
-    // TODO change to parameterized constructor for difficulty mode
-    // default constructor
-    // Creates a 9x9 board and fill 45% of the cells (easy mode)
+    // Main constructor
+    // Creates a Vocabulary Sudoku board with the given parameters
     public VocabSudokuBoard(float difficulty, int dimension, String[] nativeWords, String[] foreignWords) {
         this.dimension = dimension;
 
+        // set up sub-grid dimensions according to board dimensions
         switch (this.dimension) {
             case FOUR_DIMENSION:
                 gridHeight = FOUR_SUBGRID_HEIGHT;
@@ -81,12 +80,14 @@ public class VocabSudokuBoard {
             }
         }
 
+        // combine two arrays to populate this.wordList with WordPair objects
         fillWordList(nativeWords, foreignWords);
 
+        // fill board with given difficulty
         generateBoard(difficulty);
     }
 
-    // constructor build a board from a matrix of integers
+    // constructor to build a board from a matrix of integers
     // assumes that the matrix is square
     VocabSudokuBoard(int[][] board) {
         this.dimension = board.length;
@@ -248,6 +249,8 @@ public class VocabSudokuBoard {
     private void fillWordList(String[] nativeWords, String[] foreignWords){
         wordList = new WordPair[dimension];
 
+        // if the two arguments are inappropriate
+        // fill the list with generic words
         if (nativeWords == null || foreignWords == null ||
                 nativeWords.length != dimension || foreignWords.length != dimension) {
             for (int i = 0; i < dimension; i++) {
@@ -256,11 +259,13 @@ public class VocabSudokuBoard {
             return;
         }
 
+        // combine two arrays
         for (int i = 0; i < dimension; i++)
             wordList[i] = new WordPair(nativeWords[i], foreignWords[i]);
     }
 
     // main function for testing
+    // can be edited
     public static void main(String[] args) {
         int[] myArr = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 
