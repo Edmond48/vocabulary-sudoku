@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WordListActivity">
+
+    <TextView
+        android:id="@+id/word_list_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corner_blue"
+        android:gravity="center"
+        android:text="@string/word_list"
+        android:textAlignment="center"
+        android:textSize="36sp"
+        android:padding="20dp"
+        android:layout_margin="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/native_word"
+        app:layout_constraintEnd_toStartOf="@+id/middle_horizontal_guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/native_word"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_marginEnd="1dp"
+        android:background="@color/light_blue"
+        android:text="@string/native_word"
+        android:gravity="center"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="@+id/word_list_text"
+        app:layout_constraintEnd_toStartOf="@+id/foreign_word"
+        app:layout_constraintTop_toBottomOf="@+id/word_list_text"
+        app:layout_constraintBottom_toTopOf="@+id/word_list_view" />
+
+    <TextView
+        android:id="@+id/foreign_word"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_marginStart="1dp"
+        android:background="@color/light_blue"
+        android:text="@string/foreign_word"
+        android:gravity="center"
+        android:textAlignment="center"
+        app:layout_constraintStart_toEndOf="@+id/native_word"
+        app:layout_constraintEnd_toEndOf="@+id/word_list_text"
+        app:layout_constraintTop_toTopOf="@+id/native_word"
+        app:layout_constraintBottom_toBottomOf="@+id/native_word"/>
+
+    <ListView
+        android:id="@+id/word_list_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="@+id/native_word"
+        app:layout_constraintEnd_toEndOf="@+id/foreign_word"
+        app:layout_constraintTop_toBottomOf="@+id/native_word"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <TextView
+        android:id="@+id/remove_info_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_margin="5dp"
+        android:background="@color/white"
+        android:textColor="@color/black"
+        android:text="@string/remove_instruction"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/middle_horizontal_guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/removeAllBtn"
+        app:layout_constraintVertical_chainStyle="spread"/>
+
+    <Button
+        android:id="@+id/removeAllBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        android:text="@string/remove_all"
+        android:padding="20dp"
+        app:backgroundTint="@color/red"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/remove_info_text"
+        app:layout_constraintEnd_toEndOf="@+id/remove_info_text"
+        app:layout_constraintTop_toBottomOf="@+id/remove_info_text"
+        app:layout_constraintBottom_toTopOf="@+id/editNativeWord"/>
+
+    <EditText
+        android:id="@+id/editNativeWord"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="1dp"
+        android:background="@color/white"
+        android:ems="10"
+        android:hint="@string/native_word"
+        android:importantForAutofill="noExcludeDescendants"
+        android:inputType="text"
+        android:padding="10dp"
+        android:textColor="@color/black"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/addBtn"
+        app:layout_constraintEnd_toStartOf="@+id/editForeignWord"
+        app:layout_constraintStart_toEndOf="@+id/middle_horizontal_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/removeAllBtn" />
+
+    <EditText
+        android:id="@+id/editForeignWord"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_marginStart="1dp"
+        android:hint="@string/foreign_word"
+        android:background="@color/white"
+        android:textColor="@color/black"
+        android:visibility="gone"
+        android:inputType="text"
+        android:importantForAutofill="noExcludeDescendants"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/editNativeWord"
+        app:layout_constraintTop_toTopOf="@+id/editNativeWord"
+        app:layout_constraintBottom_toBottomOf="@+id/editNativeWord"/>
+
+    <Button
+        android:id="@+id/addBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:padding="20dp"
+        android:text="@string/add"
+        app:layout_constraintStart_toEndOf="@+id/middle_horizontal_guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editNativeWord"
+        app:layout_constraintBottom_toTopOf="@+id/removeBtn" />
+
+    <Button
+        android:id="@+id/removeBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:padding="20dp"
+        android:text="@string/remove"
+        app:layout_constraintStart_toEndOf="@+id/middle_horizontal_guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addBtn"
+        app:layout_constraintBottom_toTopOf="@+id/confirmAddBtn"/>
+
+    <Button
+        android:id="@+id/confirmAddBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:padding="20dp"
+        android:text="@string/confirm"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/middle_horizontal_guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/removeBtn"
+        app:layout_constraintBottom_toTopOf="@+id/cancelAddBtn"/>
+
+    <Button
+        android:id="@+id/cancelAddBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:padding="20dp"
+        android:text="@string/cancel"
+        android:visibility="gone"
+        app:backgroundTint="@color/red"
+        app:layout_constraintStart_toEndOf="@+id/middle_horizontal_guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/confirmAddBtn"
+        app:layout_constraintBottom_toTopOf="@+id/confirmRemoveBtn"/>
+
+    <Button
+        android:id="@+id/confirmRemoveBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:padding="20dp"
+        android:text="@string/confirm"
+        android:visibility="gone"
+        app:backgroundTint="@color/red"
+        app:layout_constraintStart_toEndOf="@+id/middle_horizontal_guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cancelAddBtn"
+        app:layout_constraintBottom_toTopOf="@+id/cancelRemoveBtn"/>
+
+    <Button
+        android:id="@+id/cancelRemoveBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:padding="20dp"
+        android:text="@string/cancel"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/middle_horizontal_guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/confirmRemoveBtn"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/middle_horizontal_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.6" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
