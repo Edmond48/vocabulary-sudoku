@@ -6,7 +6,7 @@ import org.junit.Test;
 
 public class VocabSudokuBoardTest {
 
-    //Create object using matrix
+    // Create variables for testing
     private final int [][] arr_2d = {
             {1, 2, 3, 4, 5, 6, 7, 8, 0},
             {-1, -1, -1, -1, -1, -1, -1, -1, 8},
@@ -53,6 +53,7 @@ public class VocabSudokuBoardTest {
             nativeWords,
             foreignWords
     );
+    // end of variables
 
 
     // Checks if the function returns the expected element of matrix
@@ -156,5 +157,61 @@ public class VocabSudokuBoardTest {
         tempPair = twelve_vsb.getWord(-1);
         assertEquals("", tempPair.getNativeWord());
         assertEquals("", tempPair.getForeignWord());
+    }
+
+    @Test
+    public void getDimensionTest() {
+        assertEquals(array_vsb.getDimension(), arr_2d.length);
+        assertEquals(four_vsb.getDimension(), VocabSudokuBoard.FOUR_DIMENSION);
+        assertEquals(six_vsb.getDimension(), VocabSudokuBoard.SIX_DIMENSION);
+        assertEquals(nine_vsb.getDimension(), VocabSudokuBoard.DEFAULT_DIMENSION);
+        assertEquals(twelve_vsb.getDimension(), VocabSudokuBoard.TWELVE_DIMENSION);
+    }
+
+    @Test
+    public void subgridWidthTest() {
+        assertEquals(array_vsb.getGridWidth(), arr_2d.length);
+        assertEquals(four_vsb.getGridWidth(), 2);
+        assertEquals(six_vsb.getGridWidth(), 3);
+        assertEquals(nine_vsb.getGridWidth(), 3);
+        assertEquals(twelve_vsb.getGridWidth(), 4);
+    }
+
+    @Test
+    public void subgridHeightTest() {
+        assertEquals(array_vsb.getGridHeight(), arr_2d.length);
+        assertEquals(four_vsb.getGridHeight(), 2);
+        assertEquals(six_vsb.getGridHeight(), 2);
+        assertEquals(nine_vsb.getGridHeight(), 3);
+        assertEquals(twelve_vsb.getGridHeight(), 3);
+    }
+
+    @Test
+    public void isFixedTest() {
+        for (int i = 0; i < array_vsb.getDimension(); i++) {
+            for (int j = 0; j < array_vsb.getDimension(); j++) {
+                assertEquals(array_vsb.isFixed(i, j), arr_2d[i][j] != -1);
+            }
+        }
+    }
+
+    @Test
+    public void toStringTest() {
+        assertEquals(array_vsb.toString(), buildStringFromBoard(array_vsb));
+        assertEquals(four_vsb.toString(), buildStringFromBoard(four_vsb));
+        assertEquals(six_vsb.toString(), buildStringFromBoard(six_vsb));
+        assertEquals(nine_vsb.toString(), buildStringFromBoard(nine_vsb));
+        assertEquals(twelve_vsb.toString(), buildStringFromBoard(twelve_vsb));
+    }
+
+    private String buildStringFromBoard(VocabSudokuBoard board) {
+        StringBuilder str = new StringBuilder();
+        for (int i = 0; i < board.getDimension(); i++) {
+            for (int j = 0; j < board.getDimension(); j++) {
+                str.append(String.format("%4s", board.getCell(i, j)));
+            }
+            str.append("\n");
+        }
+        return str.toString();
     }
 }
