@@ -54,34 +54,24 @@ public class MenuToGameUITest {
     @Test
     public void ClassicEasySixGame() throws UiObjectNotFoundException{
         // Main menu
-        UiObject classicBtn = device.findObject(new UiSelector()
-                .text("Classic Mode")
-                .className("android.widget.Button"));
-
-        if (classicBtn.exists() && classicBtn.isEnabled()) {
-            classicBtn.click();
-        }
+        device.findObject(new UiSelector()
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE+ ":id/" + "classic_mode_btn")
+                .className("android.widget.Button")).click();
 
         // Difficulty menu
-        UiObject mediumBtn = device.findObject(new UiSelector()
-                .text("Easy")
-                .className("android.widget.Button"));
-
-        if (mediumBtn.exists() && mediumBtn.isEnabled()) {
-            mediumBtn.click();
-        }
+        device.findObject(new UiSelector()
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE+ ":id/" + "medium_btn")
+                .className("android.widget.Button")).click();
 
         // Board size menu
-        UiObject sixBtn = device.findObject(new UiSelector()
-                .text("6 x 6")
-                .className("android.widget.Button"));
-
-        if (sixBtn.exists() && sixBtn.isEnabled()) {
-            sixBtn.click();
-        }
+        device.findObject(new UiSelector()
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE+ ":id/" + "six_btn")
+                .className("android.widget.Button")).click();
 
         // Word selection
-        UiScrollable wordList = new UiScrollable(new UiSelector().className("android.widget.ListView"));
+        UiScrollable wordList = new UiScrollable(new UiSelector()
+                .className("android.widget.ListView")
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE+ ":id/" + "word_select_list"));
 
         wordList.getChildByText(new UiSelector().className("android.widget.CheckedTextView"),
                 "apple - 'epIl naHmey").click();
@@ -102,7 +92,7 @@ public class MenuToGameUITest {
         assertEquals(statusField.getText(), "6/6 selected");
 
         UiObject confirmBtn = device.findObject(new UiSelector()
-                .text("Confirm")
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE+ ":id/" + "confirmBtn")
                 .className("android.widget.Button"));
         confirmBtn.click();
 
