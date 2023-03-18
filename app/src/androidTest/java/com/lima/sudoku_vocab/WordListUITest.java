@@ -52,22 +52,22 @@ public class WordListUITest {
         // Go into word list screen
         device.findObject(new UiSelector()
                 .className("android.widget.Button")
-                .text("Word List")).click();
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE + ":id/" + "word_list_btn")).click();
 
         // Add mode
         device.findObject(new UiSelector()
                 .className("android.widget.Button")
-                .text("Add")).click();
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE + ":id/" + "addBtn")).click();
 
         // Cancel add
         device.findObject(new UiSelector()
                 .className("android.widget.Button")
-                .text("Cancel")).click();
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE + ":id/" + "cancelAddBtn")).click();
 
         // Add again
         device.findObject(new UiSelector()
                 .className("android.widget.Button")
-                .text("Add")).click();
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE + ":id/" + "addBtn")).click();
 
         // Input native word
         device.findObject(new UiSelector()
@@ -78,28 +78,28 @@ public class WordListUITest {
         // Input foreign word
         device.findObject(new UiSelector()
                         .className("android.widget.EditText")
-                        .resourceId(VOCABULARY_SUDOKU_PACKAGE + ":id/" + "editNativeWord"))
+                        .resourceId(VOCABULARY_SUDOKU_PACKAGE + ":id/" + "editForeignWord"))
                 .setText("test_foreign1");
 
         // Confirm addition of word pair
         device.findObject(new UiSelector()
                 .className("android.widget.Button")
-                .text("Confirm")).click();
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE + ":id/" + "confirmAddBtn")).click();
 
         // Remove mode
         device.findObject(new UiSelector()
                 .className("android.widget.Button")
-                .text("Remove")).click();
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE + ":id/" + "removeBtn")).click();
 
         // Cancel
         device.findObject(new UiSelector()
                 .className("android.widget.Button")
-                .text("Cancel")).click();
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE + ":id/" + "cancelRemoveBtn")).click();
 
         // Remove again
         device.findObject(new UiSelector()
                 .className("android.widget.Button")
-                .text("Remove")).click();
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE + ":id/" + "removeBtn")).click();
 
         // Choose word added above
         UiScrollable list = new UiScrollable(new UiSelector()
@@ -111,6 +111,6 @@ public class WordListUITest {
         // Confirm removal
         device.findObject(new UiSelector()
                 .className("android.widget.Button")
-                .text("Confirm")).click();
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE + ":id/" + "confirmRemoveBtn")).click();
     }
 }
