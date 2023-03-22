@@ -64,6 +64,11 @@ public class SudokuGameActivity extends AppCompatActivity {
     // the field for displaying a word pair
     private TextView displayWord;
 
+    // mapping to random index for Listening Comprehension Mode
+    // this is to prevent the user from guessing the word by the order of the buttons
+    // only initialized in LISTEN_MODE, i.e. when gameMode == 2
+    private int[] randomIndex;
+
     // index of the currently selected action button
     // 0 to (dimension - 1) corresponds with index of the word pair in board[][]
     // VocabSudokuBoard.EMPTY_WORD corresponds to clear button
@@ -107,6 +112,27 @@ public class SudokuGameActivity extends AppCompatActivity {
                 );
 
         this.boardSide = board.getDimension();
+
+        // set up index for LISTEN_MODE
+        if (gameMode == LISTEN_MODE) {
+
+            // populate the array with integers from 1 to N, with N being the dimension of the board
+            randomIndex = new int[boardSide];
+            for (int i = 0; i < boardSide; i++) {
+                randomIndex[i] = i+1;
+            }
+
+            // shuffle the array
+            for (int i = 0; i < randomIndex.length; i++) {
+                // generate index for element at i between i and arr.length - 1
+                int index = i + (int) (Math.random() * Integer.MAX_VALUE) % (randomIndex.length - i);
+
+                // swap elements at index and i
+                int temp = randomIndex[i];
+                randomIndex[i] = randomIndex[index];
+                randomIndex[index] = temp;
+            }
+        }
 
         // set up dimension for word buttons table
         switch (boardSide) {
@@ -270,7 +296,11 @@ public class SudokuGameActivity extends AppCompatActivity {
                 board.setCell(rowIndex, colIndex, selectedActionButtonIndex);
 
                 // Update word on screen
-                cells[rowIndex][colIndex].setText(getPrimaryWord(board.getWord(selectedActionButtonIndex)));
+                String cellContent =
+                        gameMode == LISTEN_MODE && selectedActionButtonIndex != VocabSudokuBoard.EMPTY_WORD?
+                                Integer.toString(randomIndex[selectedActionButtonIndex]) :
+                                getPrimaryWord(selectedActionButtonIndex);
+                cells[rowIndex][colIndex].setText(cellContent);
 
                 updateWordDisplay(rowIndex, colIndex);
             }
@@ -319,7 +349,11 @@ public class SudokuGameActivity extends AppCompatActivity {
                 board.setCell(rowIndex, colIndex, selectedActionButtonIndex);
 
                 // Update the word on the screen
-                cells[rowIndex][colIndex].setText(getPrimaryWord(board.getWord(selectedActionButtonIndex)));
+                String cellContent =
+                        gameMode == LISTEN_MODE && selectedActionButtonIndex != VocabSudokuBoard.EMPTY_WORD?
+                                Integer.toString(randomIndex[selectedActionButtonIndex]) :
+                                getPrimaryWord(selectedActionButtonIndex);
+                cells[rowIndex][colIndex].setText(cellContent);
 
                 updateWordDisplay(rowIndex, colIndex);
             }
@@ -367,7 +401,7 @@ public class SudokuGameActivity extends AppCompatActivity {
                 // set text after board has been drawn
                 int wordIndex = board.getCell(row, col);
                 if (wordIndex != VocabSudokuBoard.EMPTY_WORD)
-                    cell.setText(getSecondaryWord(board.getWord(wordIndex)));
+                    cell.setText(getSecondaryWord(wordIndex));
 
                 // make the cell square
                 cell.setHeight(cell.getWidth());
@@ -409,7 +443,7 @@ public class SudokuGameActivity extends AppCompatActivity {
                 wordBtn.setMinimumHeight(wordBtn.getHeight());
 
                 // set the text
-                wordBtn.setText(getPrimaryWord(board.getWord(colIndex + rowIndex * (int) buttonsPerRow)));
+                wordBtn.setText(getPrimaryWord(colIndex + rowIndex * (int) buttonsPerRow));
             }
         });
     }
@@ -462,6 +496,12 @@ public class SudokuGameActivity extends AppCompatActivity {
             return;
         }
 
+        if (gameMode == LISTEN_MODE) {
+            builder.append(randomIndex[wordIndex]);
+            displayWord.setText(builder.toString());
+            return;
+        }
+
         // display non-empty cell
         WordPair wordPair = board.getWord(wordIndex);
         builder.append(wordPair.getNativeWord());
@@ -471,13 +511,23 @@ public class SudokuGameActivity extends AppCompatActivity {
     }
 
     // words users will use to fill in
-    private String getPrimaryWord(WordPair pair) {
-        return gameMode == CLASSIC_MODE ? pair.getForeignWord() : pair.getNativeWord();
+    private String getPrimaryWord(int index) {
+        WordPair pair = board.getWord(index);
+        if (gameMode == CLASSIC_MODE)
+            return pair.getForeignWord();
+        else
+            return pair.getNativeWord();
     }
 
     // words pre-filled by the game
-    private String getSecondaryWord(WordPair pair) {
-        return gameMode == CLASSIC_MODE ? pair.getNativeWord() : pair.getForeignWord();
+    private String getSecondaryWord(int index) {
+        WordPair pair = board.getWord(index);
+        if (gameMode == LISTEN_MODE && index != VocabSudokuBoard.EMPTY_WORD)
+            return Integer.toString(randomIndex[index]);
+        else if (gameMode == REVERSE_MODE)
+            return pair.getForeignWord();
+        else
+            return pair.getNativeWord();
     }
 
     // make an Intent to launch this activity
