@@ -40,10 +40,22 @@
         android:background="@drawable/menu_button_background"
         android:text="@string/reverse_mode"
         android:textSize="36sp"
-        app:layout_constraintBottom_toTopOf="@+id/word_list_btn"
+        app:layout_constraintBottom_toTopOf="@+id/listen_mode_btn"
         app:layout_constraintEnd_toEndOf="@+id/classic_mode_btn"
         app:layout_constraintStart_toStartOf="@+id/classic_mode_btn"
         app:layout_constraintTop_toBottomOf="@+id/classic_mode_btn" />
+
+    <Button
+        android:id="@+id/listen_mode_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/menu_button_background"
+        android:text="@string/listen_mode"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toEndOf="@+id/reverse_mode_btn"
+        app:layout_constraintStart_toStartOf="@+id/reverse_mode_btn"
+        app:layout_constraintTop_toBottomOf="@+id/reverse_mode_btn"
+        app:layout_constraintBottom_toTopOf="@+id/word_list_btn"/>
 
     <Button
         android:id="@+id/word_list_btn"
@@ -52,9 +64,9 @@
         android:background="@drawable/menu_button_background"
         android:text="@string/word_list"
         android:textSize="36sp"
-        app:layout_constraintEnd_toEndOf="@+id/reverse_mode_btn"
-        app:layout_constraintStart_toStartOf="@+id/reverse_mode_btn"
-        app:layout_constraintTop_toBottomOf="@+id/reverse_mode_btn"
+        app:layout_constraintEnd_toEndOf="@+id/listen_mode_btn"
+        app:layout_constraintStart_toStartOf="@+id/listen_mode_btn"
+        app:layout_constraintTop_toBottomOf="@+id/listen_mode_btn"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <androidx.constraintlayout.widget.Guideline

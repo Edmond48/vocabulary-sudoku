@@ -25,6 +25,7 @@ public class SudokuGameActivity extends AppCompatActivity {
     // the only effect of modes is which word is shown in UI, does not change game logic
     public static final int CLASSIC_MODE = 0;
     public static final int REVERSE_MODE = 1;
+    public static final int LISTEN_MODE = 2;
 
     // codes to extract Extras from Intent used to launch the Activity
     public static final String GAME_MODE_CODE_IN_GAME = "com.lima.sudoku_vocab.SudokuGameActivity - Game mode";

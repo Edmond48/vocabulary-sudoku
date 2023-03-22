@@ -24,4 +24,5 @@
     <string name="six_by_six">6 x 6</string>
     <string name="nine_by_nine">9 x 9</string>
     <string name="twelve_by_twelve">12 x 12</string>
+    <string name="listen_mode">Listen Mode</string>
 </resources>
