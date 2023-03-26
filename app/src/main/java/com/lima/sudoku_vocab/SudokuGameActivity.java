@@ -6,9 +6,13 @@ import androidx.core.content.ContextCompat;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewTreeObserver;
 import android.widget.TableLayout;
@@ -69,6 +73,9 @@ public class SudokuGameActivity extends AppCompatActivity {
     // only initialized in LISTEN_MODE, i.e. when gameMode == 2
     private int[] randomIndex;
 
+    // stores the sound objects for LISTEN_MODE
+    private MediaPlayer[] wordSounds;
+
     // index of the currently selected action button
     // 0 to (dimension - 1) corresponds with index of the word pair in board[][]
     // VocabSudokuBoard.EMPTY_WORD corresponds to clear button
@@ -95,6 +102,18 @@ public class SudokuGameActivity extends AppCompatActivity {
         setUpClearButton();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // release sound resources
+        if (gameMode == LISTEN_MODE) {
+            for (MediaPlayer mp : wordSounds) {
+                mp.release();
+            }
+        }
+    }
+
     // extract the game mode and difficulty from the intent
     // set up member variables accordingly
     private void configureMemberVariables() {
@@ -113,13 +132,13 @@ public class SudokuGameActivity extends AppCompatActivity {
 
         this.boardSide = board.getDimension();
 
-        // set up index for LISTEN_MODE
+        // set up index and sound for LISTEN_MODE
         if (gameMode == LISTEN_MODE) {
 
             // populate the array with integers from 1 to N, with N being the dimension of the board
             randomIndex = new int[boardSide];
             for (int i = 0; i < boardSide; i++) {
-                randomIndex[i] = i+1;
+                randomIndex[i] = i + 1;
             }
 
             // shuffle the array
@@ -131,6 +150,24 @@ public class SudokuGameActivity extends AppCompatActivity {
                 int temp = randomIndex[i];
                 randomIndex[i] = randomIndex[index];
                 randomIndex[index] = temp;
+            }
+
+            // set up sounds
+            wordSounds = new MediaPlayer[boardSide];
+            for (int i = 0; i < wordSounds.length; i++) {
+                int soundId = getResources().getIdentifier(
+                        board.getWord(i).getNativeWord(),
+                        "raw",
+                        this.getPackageName());
+                // if the file is not found
+                if (soundId == 0) {
+                    soundId = getResources().getIdentifier(
+                            "no_word",
+                            "raw",
+                            this.getPackageName());
+                }
+                // set up each MediaPlayer object in the array
+                wordSounds[i] = MediaPlayer.create(this, soundId);
             }
         }
 
@@ -284,6 +321,7 @@ public class SudokuGameActivity extends AppCompatActivity {
 
     // handles click on the Sudoku board's cell
     private void onCellClick(int rowIndex, int colIndex) {
+
         // If there is an action button already selected
         if (selectedActionButtonIndex < boardSide) {
 
@@ -305,7 +343,7 @@ public class SudokuGameActivity extends AppCompatActivity {
                 updateWordDisplay(rowIndex, colIndex);
             }
 
-            // Deselected the cell and update selected index
+            // Deselect the cell and update selected index
             setCellBackgroundColor(rowIndex, colIndex);
             selectedCellIndex = VocabSudokuBoard.EMPTY_WORD;
         }
@@ -325,6 +363,9 @@ public class SudokuGameActivity extends AppCompatActivity {
                 selectedCellIndex = VocabSudokuBoard.EMPTY_WORD;
                 return;
             }
+
+            // play sound
+            playWordSound(rowIndex, colIndex);
 
             // Set and highlight new cell
             selectedCellIndex = rowIndex * boardSide + colIndex;
@@ -508,6 +549,14 @@ public class SudokuGameActivity extends AppCompatActivity {
         builder.append(" - ");
         builder.append(wordPair.getForeignWord());
         displayWord.setText(builder.toString());
+    }
+
+    private void playWordSound(int row, int col) {
+        if (gameMode != LISTEN_MODE)
+            return;
+        int wordIndex = board.getCell(row, col);
+        if (wordIndex != VocabSudokuBoard.EMPTY_WORD)
+            wordSounds[wordIndex].start();
     }
 
     // words users will use to fill in
