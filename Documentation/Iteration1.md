@@ -25,7 +25,7 @@
 
 **TDD example**: After choosing a game mode, the user is prompted to select the word pairs from the added list which will be used in that game.
 
-**Status**: Not Implemented
+**Status**: Implemented
 
 ![Word selection screen](img/select_word.jpg "Word selection")
 
