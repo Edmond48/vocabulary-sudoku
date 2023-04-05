@@ -58,7 +58,7 @@ public class VocabSudokuBoardTest {
 
     // Checks if the function returns the expected element of matrix
     @Test
-    public void getCell() {
+    public void getCellTest() {
         for (int i = 0; i < array_vsb.getDimension(); i++) {
             for (int j = 0; j < array_vsb.getDimension(); j++) {
                 assertEquals(arr_2d[i][j], array_vsb.getCell(i, j));
@@ -78,7 +78,7 @@ public class VocabSudokuBoardTest {
 
     // Tests if wordIndex is assigned to the cell
     @Test
-    public void setCell() {
+    public void setCellTest() {
         int temp;
 
         array_vsb.setCell(1,0,5);
@@ -113,7 +113,7 @@ public class VocabSudokuBoardTest {
 
     //Tests if the function returns the expected word pair
     @Test
-    public void getWord() {
+    public void getWordTest() {
         WordPair tempPair = array_vsb.getWord(4);
         assertEquals("native4", tempPair.getNativeWord());
         assertEquals("foreign4", tempPair.getForeignWord());
@@ -137,7 +137,7 @@ public class VocabSudokuBoardTest {
 
     // Tests the function when cell is empty
     @Test
-    public void getWordForEmptyCell() {
+    public void getWordForEmptyCellTest() {
         WordPair tempPair = array_vsb.getWord(-1);
         assertEquals("", tempPair.getNativeWord());
         assertEquals("", tempPair.getForeignWord());
