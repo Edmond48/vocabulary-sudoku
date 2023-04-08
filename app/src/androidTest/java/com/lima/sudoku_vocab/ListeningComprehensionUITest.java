@@ -52,7 +52,7 @@ public class ListeningComprehensionUITest {
     }
 
     @Test
-    public void ClassicEasySixGame() throws UiObjectNotFoundException{
+    public void ListenEasyNineGame() throws UiObjectNotFoundException{
         // Main menu
         device.findObject(new UiSelector()
                 .resourceId(VOCABULARY_SUDOKU_PACKAGE+ ":id/" + "listen_mode_btn")
