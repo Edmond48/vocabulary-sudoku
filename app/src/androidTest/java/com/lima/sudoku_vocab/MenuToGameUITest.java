@@ -52,7 +52,88 @@ public class MenuToGameUITest {
     }
 
     @Test
-    public void ClassicEasySixGame() throws UiObjectNotFoundException{
+    public void ClassicHardFourGame() throws UiObjectNotFoundException{
+        // Main menu
+        device.findObject(new UiSelector()
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE+ ":id/" + "classic_mode_btn")
+                .className("android.widget.Button")).click();
+
+        // Difficulty menu
+        device.findObject(new UiSelector()
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE+ ":id/" + "hard_btn")
+                .className("android.widget.Button")).click();
+
+        // Board size menu
+        device.findObject(new UiSelector()
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE+ ":id/" + "four_btn")
+                .className("android.widget.Button")).click();
+
+        // Word selection
+        UiScrollable wordList = new UiScrollable(new UiSelector()
+                .className("android.widget.ListView")
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE+ ":id/" + "word_select_list"));
+
+        wordList.getChildByText(new UiSelector().className("android.widget.CheckedTextView"),
+                "apple - 'epIl naHmey").click();
+        wordList.getChildByText(new UiSelector().className("android.widget.CheckedTextView"),
+                "duck - chech").click();
+        wordList.getChildByText(new UiSelector().className("android.widget.CheckedTextView"),
+                "egg - Qlm").click();
+        wordList.getChildByText(new UiSelector().className("android.widget.CheckedTextView"),
+                "king - Ta'").click();
+
+        UiObject statusField = device.findObject(new UiSelector()
+                .className("android.widget.TextView")
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE+ ":id/" + "selected_word_count"));
+        assertEquals(statusField.getText(), "4/4 selected");
+
+        UiObject confirmBtn = device.findObject(new UiSelector()
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE+ ":id/" + "confirmBtn")
+                .className("android.widget.Button"));
+        confirmBtn.click();
+
+        // Main game
+        UiObject board = device.findObject(new UiSelector()
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE + ":id/" + "sudoku_table"));
+
+        UiObject buttons = device.findObject(new UiSelector()
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE + ":id/" + "word_buttons"));
+
+        // First input mode: cell -> button
+        for (int i = 0; i < 8; i++) {
+            board.getChild(new UiSelector()
+                            .className("android.widget.TableRow")
+                            .index(new Random().nextInt(4)))
+                    .getChild(new UiSelector()
+                            .className("android.widget.TextView")
+                            .index(new Random().nextInt(4))).click();
+            buttons.getChild(new UiSelector().className("android.widget.TextView").text("Ta'")).click();
+        }
+
+        // Second input mode: button -> many cells
+        buttons.getChild(new UiSelector().className("android.widget.TextView").text("chech")).click();
+        for (int i = 0; i < 8; i++)
+            board.getChild(new UiSelector()
+                            .className("android.widget.TableRow")
+                            .index(new Random().nextInt(4)))
+                    .getChild(new UiSelector()
+                            .className("android.widget.TextView")
+                            .index(new Random().nextInt(4))).click();
+
+        // Clear button test
+        device.findObject(new UiSelector()
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE + ":id/" + "clearButton")).click();
+        for (int i = 0; i < 8; i++)
+            board.getChild(new UiSelector()
+                            .className("android.widget.TableRow")
+                            .index(new Random().nextInt(4)))
+                    .getChild(new UiSelector()
+                            .className("android.widget.TextView")
+                            .index(new Random().nextInt(4))).click();
+    }
+
+    @Test
+    public void ClassicMediumSixGame() throws UiObjectNotFoundException{
         // Main menu
         device.findObject(new UiSelector()
                 .resourceId(VOCABULARY_SUDOKU_PACKAGE+ ":id/" + "classic_mode_btn")
@@ -134,5 +215,97 @@ public class MenuToGameUITest {
                     .getChild(new UiSelector()
                             .className("android.widget.TextView")
                             .index(new Random().nextInt(6))).click();
+    }
+
+    @Test
+    public void ReverseEasyNineGame() throws UiObjectNotFoundException {
+        // Main menu
+        device.findObject(new UiSelector()
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE + ":id/" + "reverse_mode_btn")
+                .className("android.widget.Button")).click();
+
+        // Difficulty menu
+        device.findObject(new UiSelector()
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE + ":id/" + "easy_btn")
+                .className("android.widget.Button")).click();
+
+        // Board size menu
+        device.findObject(new UiSelector()
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE + ":id/" + "nine_btn")
+                .className("android.widget.Button")).click();
+
+        // Word selection
+        UiScrollable wordList = new UiScrollable(new UiSelector()
+                .className("android.widget.ListView")
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE + ":id/" + "word_select_list"));
+
+        wordList.getChildByText(new UiSelector().className("android.widget.CheckedTextView"),
+                "apple - 'epIl naHmey").click();
+        wordList.getChildByText(new UiSelector().className("android.widget.CheckedTextView"),
+                "baby - ghu").click();
+        wordList.getChildByText(new UiSelector().className("android.widget.CheckedTextView"),
+                "creature - chenmoH").click();
+        wordList.getChildByText(new UiSelector().className("android.widget.CheckedTextView"),
+                "duck - chech").click();
+        wordList.getChildByText(new UiSelector().className("android.widget.CheckedTextView"),
+                "egg - Qlm").click();
+        wordList.getChildByText(new UiSelector().className("android.widget.CheckedTextView"),
+                "fog - tlhimqaH").click();
+        wordList.getChildByText(new UiSelector().className("android.widget.CheckedTextView"),
+                "ground - yav").click();
+        wordList.getChildByText(new UiSelector().className("android.widget.CheckedTextView"),
+                "hope - tul").click();
+        wordList.getChildByText(new UiSelector().className("android.widget.CheckedTextView"),
+                "love - parmaq").click();
+
+        UiObject statusField = device.findObject(new UiSelector()
+                .className("android.widget.TextView")
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE + ":id/" + "selected_word_count"));
+        assertEquals(statusField.getText(), "9/9 selected");
+
+        UiObject confirmBtn = device.findObject(new UiSelector()
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE + ":id/" + "confirmBtn")
+                .className("android.widget.Button"));
+        confirmBtn.click();
+
+        // Main game
+        UiObject board = device.findObject(new UiSelector()
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE + ":id/" + "sudoku_table"));
+
+        UiObject buttons = device.findObject(new UiSelector()
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE + ":id/" + "word_buttons"));
+
+        // First input mode: cell -> button
+        for (int i = 0; i < 18; i++) {
+            board.getChild(new UiSelector()
+                            .className("android.widget.TableRow")
+                            .index(new Random().nextInt(9)))
+                    .getChild(new UiSelector()
+                            .className("android.widget.TextView")
+                            .index(new Random().nextInt(9))).click();
+            buttons.getChild(new UiSelector().className("android.widget.TextView").text("apple")).click();
+        }
+
+        // Second input mode: button -> many cells
+        buttons.getChild(new UiSelector().className("android.widget.TextView").text("love")).click();
+        for (int i = 0; i < 18; i++)
+            board.getChild(new UiSelector()
+                            .className("android.widget.TableRow")
+                            .index(new Random().nextInt(9)))
+                    .getChild(new UiSelector()
+                            .className("android.widget.TextView")
+                            .index(new Random().nextInt(9))).click();
+
+        // Clear button test
+        device.findObject(new UiSelector()
+                .resourceId(VOCABULARY_SUDOKU_PACKAGE + ":id/" + "clearButton")).click();
+        for (int i = 0; i < 18; i++)
+            board.getChild(new UiSelector()
+                            .className("android.widget.TableRow")
+                            .index(new Random().nextInt(9)))
+                    .getChild(new UiSelector()
+                            .className("android.widget.TextView")
+                            .index(new Random().nextInt(9))).click();
+
     }
 }
